@@ -6,6 +6,7 @@ describe('Error Tests', () => {
             id: '123',
             name: 'TEST_ERROR',
             errorId: '1',
+            courseId: '123',
             itemName: 'Test Item',
             itemType: 'test',
             message: 'Error message',

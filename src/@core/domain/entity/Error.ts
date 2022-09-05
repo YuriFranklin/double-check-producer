@@ -5,6 +5,7 @@ export type ErrorProps = {
     name: string;
     type: 'error' | 'warning';
     severity: 'high' | 'low' | 'medium';
+    courseId?: string;
     itemId?: string;
     itemName: string;
     itemType: string;
@@ -20,6 +21,7 @@ export class Error {
             ...props,
             id: props.id || crypto.randomUUID(),
             itemId: props.itemId || '',
+            courseId: props.courseId || '',
         };
     }
 

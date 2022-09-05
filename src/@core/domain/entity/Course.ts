@@ -1,12 +1,15 @@
 import { Error } from './Error';
+import crypto from 'crypto';
 
 export type CourseProps = {
+    id?: string;
     name?: string;
-    id: string;
     errors?: Error[];
     createdAt?: Date;
     editedAt?: Date;
+    courseId: string;
     doubleCheckId?: string;
+    checked?: boolean;
 };
 
 export class Course {
@@ -20,8 +23,10 @@ export class Course {
         }
         this.props = {
             ...props,
+            id: props.id || crypto.randomUUID(),
             name: props.name || '',
             errors: props.errors || [],
+            checked: props.checked || false,
             doubleCheckId: props.doubleCheckId || '',
             createdAt: new Date(),
             editedAt: new Date(),

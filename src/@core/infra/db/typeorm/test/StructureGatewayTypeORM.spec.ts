@@ -42,9 +42,7 @@ describe('StructureTypeOrmRepository Tests', () => {
             templates: [template],
         };
 
-        const structureRepository = dataSource.getRepository(StructureSchema);
-
-        const repository = new StructureGatewayTypeORM(structureRepository);
+        const repository = new StructureGatewayTypeORM(dataSource);
 
         const structure = Structure.create(structureProps);
 
@@ -102,9 +100,7 @@ describe('StructureTypeOrmRepository Tests', () => {
             templates: [template],
         };
 
-        const structureRepository = dataSource.getRepository(StructureSchema);
-
-        const repository = new StructureGatewayTypeORM(structureRepository);
+        const repository = new StructureGatewayTypeORM(dataSource);
 
         const structure = Structure.create(structureProps);
 

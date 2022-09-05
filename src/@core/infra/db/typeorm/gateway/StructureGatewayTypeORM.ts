@@ -1,11 +1,16 @@
 import { StructureGatewayInterface } from '../../../../domain/gateway/StructureGatewayInterface';
 import { Structure } from '../../../../domain/entity/Structure';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Structure as StructureSchema } from '../entity/Structure';
 import { StructureTypeORMMapper } from '../mapper/StructureTypeORMMapper';
 
 export class StructureGatewayTypeORM implements StructureGatewayInterface {
-    constructor(private ormRepository: Repository<StructureSchema>) {}
+    private ormRepository: Repository<StructureSchema>;
+
+    constructor(private dataSource: DataSource) {
+        this.ormRepository = this.dataSource.getRepository(StructureSchema);
+    }
+
     findAll(): Promise<Structure[]> {
         throw new Error('Method not implemented.');
     }
@@ -17,6 +22,7 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
 
     async listAll(): Promise<Structure[]> {
         const ormStructures = await this.ormRepository.find();
+
         return ormStructures.map((ormStructure) =>
             StructureTypeORMMapper.toDomainEntity(ormStructure),
         );

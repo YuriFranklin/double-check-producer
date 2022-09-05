@@ -5,6 +5,7 @@ export type DoubleCheckProps = {
     id?: string;
     courses: Course[];
     checked?: boolean;
+    createdAt?: Date;
 };
 
 export class DoubleCheck {
@@ -16,6 +17,7 @@ export class DoubleCheck {
             id: props.id || crypto.randomUUID(),
             checked: props.checked || false,
             courses: props.courses || [],
+            createdAt: props.createdAt || new Date(),
         };
     }
 
@@ -27,6 +29,7 @@ export class DoubleCheck {
         return {
             ...this.props,
             courses: this.props.courses.map((course) => course.toJSON()),
+            createdAt: this.props.createdAt.toISOString(),
         };
     }
 }
