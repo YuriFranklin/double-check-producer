@@ -80,7 +80,6 @@ describe('DoubleCheckTypeOrmRepository Tests', () => {
 
     it('Should find all structure in repository', async () => {
         const doubleChecks = await gateway.findAll();
-        console.log(doubleChecks);
         expect(doubleChecks[0]).toBeInstanceOf(DoubleCheck);
     });
 

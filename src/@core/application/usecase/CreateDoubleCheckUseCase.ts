@@ -36,7 +36,8 @@ export type CreateDoubleCheckUseCaseOutput = {
 
 export type CourseInput = {
     name?: string;
-    id: string;
+    id?: string;
+    courseId: string;
     errors: ErrorInput[];
     createdAt: Date;
     editedAt: Date;

@@ -1,10 +1,29 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { Error as ErrorSchema } from './@core/infra/db/typeorm/entity/Error';
+import { Course as CourseSchema } from './@core/infra/db/typeorm/entity/Course';
+import { DoubleCheck as DoubleCheckSchema } from './@core/infra/db/typeorm/entity/DoubleCheck';
+import { DoublecheckModule } from './doublecheck/doublecheck.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            //ignoreEnvFile: true,
+            isGlobal: true,
+        }),
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            host: process.env.PG_HOSTNAME,
+            username: process.env.PG_USER_NAME,
+            password: process.env.PG_PASSWORD,
+            port: Number(process.env.PG_PORT),
+            database: 'double_check',
+            synchronize: true,
+            logging: true,
+            entities: [ErrorSchema, CourseSchema, DoubleCheckSchema],
+        }),
+        DoublecheckModule,
+    ],
 })
 export class AppModule {}

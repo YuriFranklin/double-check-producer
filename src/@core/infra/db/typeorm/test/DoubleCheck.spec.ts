@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { Error as ErrorSchema } from '../entity/Error';
 import { Course as CourseSchema } from '../entity/Course';
 import { DoubleCheck as DoubleCheckSchema } from '../entity/DoubleCheck';
+import crypto from 'crypto';
 import 'dotenv/config';
 
 describe('DoubleCheck Tests', () => {
@@ -37,9 +38,10 @@ describe('DoubleCheck Tests', () => {
         const error = dataSource.getRepository(ErrorSchema).create(errorProps);
 
         const courseProps: CourseSchema = {
+            id: crypto.randomUUID(),
+            courseId: '123',
             checked: false,
             createdAt: new Date(),
-            id: '123',
             name: 'Test Course',
             errors: [error],
         };
