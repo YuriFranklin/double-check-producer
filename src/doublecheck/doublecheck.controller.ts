@@ -3,39 +3,32 @@ import {
     Get,
     Post,
     Body,
-    Patch,
     Param,
     Delete,
+    UseGuards,
 } from '@nestjs/common';
+import { JwtGuard } from '../auth/jwt/jwt.guard';
 import { DoublecheckService } from './doublecheck.service';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
-import { UpdateDoublecheckDto } from './dto/update-doublecheck.dto';
 
 @Controller('doublecheck')
 export class DoublecheckController {
     constructor(private readonly doublecheckService: DoublecheckService) {}
 
     @Post()
-    create(@Body() createDoublecheckDto: CreateDoublecheckDto) {
+    async create(@Body() createDoublecheckDto: CreateDoublecheckDto) {
         return this.doublecheckService.create(createDoublecheckDto);
     }
 
+    @UseGuards(JwtGuard)
     @Get()
-    findAll() {
+    async findAll() {
         return this.doublecheckService.findAll();
     }
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.doublecheckService.findOne(+id);
-    }
-
-    @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateDoublecheckDto: UpdateDoublecheckDto,
-    ) {
-        return this.doublecheckService.update(+id, updateDoublecheckDto);
+        return this.doublecheckService.findOne(id);
     }
 
     @Delete(':id')

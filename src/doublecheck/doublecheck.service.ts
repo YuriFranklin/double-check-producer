@@ -1,19 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { CreateDoubleCheckUseCase } from '../@core/application/usecase/CreateDoubleCheckUseCase';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
 import { UpdateDoublecheckDto } from './dto/update-doublecheck.dto';
+import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllDoubleCheckUseCase';
+import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
 
 @Injectable()
 export class DoublecheckService {
-    create(createDoublecheckDto: CreateDoublecheckDto) {
-        return 'This action adds a new doublecheck';
+    constructor(
+        private createUseCase: CreateDoubleCheckUseCase,
+        private findAllUseCase: FindAllDoubleCheckUseCase,
+        private findUseCase: FindDoubleCheckUseCase,
+    ) {}
+
+    async create(createDoublecheckDto: CreateDoublecheckDto) {
+        return this.createUseCase.execute(createDoublecheckDto);
     }
 
-    findAll() {
-        return `This action returns all doublecheck`;
+    async findAll() {
+        return this.findAllUseCase.execute();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} doublecheck`;
+    findOne(id: string) {
+        return this.findUseCase.execute(id);
     }
 
     update(id: number, updateDoublecheckDto: UpdateDoublecheckDto) {

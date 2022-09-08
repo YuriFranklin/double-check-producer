@@ -9,8 +9,8 @@ export class CreateDoubleCheckUseCase {
     async execute(
         input: CreateDoubleCheckUseCaseInput,
     ): Promise<CreateDoubleCheckUseCaseOutput> {
-        const courses = input.courses.map((course) => {
-            const errors = course.errors.map((error) => Error.create(error));
+        const courses = input.courses?.map((course) => {
+            const errors = course.errors?.map((error) => Error.create(error));
             return Course.create({ ...course, errors });
         });
 
@@ -39,8 +39,8 @@ export type CourseInput = {
     id?: string;
     courseId: string;
     errors: ErrorInput[];
-    createdAt: Date;
-    editedAt: Date;
+    createdAt?: Date;
+    editedAt?: Date;
 };
 
 export type CourseOutput = {

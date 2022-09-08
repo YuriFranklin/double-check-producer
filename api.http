@@ -1,0 +1,35 @@
+#INSERT NEW DOUBLECHECK
+POST http://localhost:3000/doublecheck
+Content-Type: application/json
+
+{
+   "courses":[
+      {
+         "name":"Test course",
+         "courseId":"1234"
+      }
+   ]
+}
+
+###
+#FIND ALL DOUBLECHECK
+GET http://localhost:3000/doublecheck
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNjYyNTkzODYwLCJleHAiOjE2NjI1OTc0NjB9.5_LykNxoXaETQNxZeEE9QEerWytJdm7ZyR1L_cxZlHA
+
+###
+#FIND DOUBLECHECK
+GET http://localhost:3000/doublecheck/a26b2ed8-7fea-46c3-9a4d-9f24d439f07d
+
+###
+#LOGIN
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+   "userName":"test",
+   "password":"test"
+}
+
+###
+GET http://localhost:3000/auth/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNjYyNTkzODYwLCJleHAiOjE2NjI1OTc0NjB9.5_LykNxoXaETQNxZeEE9QEerWytJdm7ZyR1L_cxZlHA
