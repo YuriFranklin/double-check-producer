@@ -9,9 +9,30 @@ import { CreateDoubleCheckUseCase } from '../@core/application/usecase/CreateDou
 import { DoubleCheckGatewayInterface } from '../@core/domain/gateway/DoubleCheckGatewayInterface';
 import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllDoubleCheckUseCase';
 import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
+import { ClientsModule, Transport, ClientKafka } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([DoubleCheckSchema])],
+    imports: [
+        ConfigModule.forRoot(),
+        TypeOrmModule.forFeature([DoubleCheckSchema]),
+        ClientsModule.register([
+            {
+                name: 'KAFKA_SERVICE',
+                transport: Transport.KAFKA,
+                options: {
+                    client: {
+                        brokers: [
+                            `${process.env.KAFKA_HOSTNAME}:${process.env.KAFKA_PORT}`,
+                        ],
+                    },
+                    consumer: {
+                        groupId: 'double-check-producer',
+                    },
+                },
+            },
+        ]),
+    ],
     controllers: [DoublecheckController],
     providers: [
         DoublecheckService,
@@ -38,6 +59,13 @@ import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleC
             useFactory: (dataSource: DataSource) =>
                 new DoubleCheckGatewayTypeORM(dataSource),
             inject: [getDataSourceToken()],
+        },
+        {
+            provide: 'KAFKA_PRODUCER',
+            useFactory: async (kafkaService: ClientKafka) => {
+                return kafkaService.connect();
+            },
+            inject: ['KAFKA_SERVICE'],
         },
     ],
 })

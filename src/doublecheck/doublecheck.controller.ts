@@ -6,18 +6,39 @@ import {
     Param,
     Delete,
     UseGuards,
+    Inject,
 } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt/jwt.guard';
 import { DoublecheckService } from './doublecheck.service';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
+import { Producer } from '@nestjs/microservices/external/kafka.interface';
 
 @Controller('doublecheck')
 export class DoublecheckController {
-    constructor(private readonly doublecheckService: DoublecheckService) {}
+    constructor(
+        private readonly doublecheckService: DoublecheckService,
+        @Inject('KAFKA_PRODUCER')
+        private kafkaProducer: Producer,
+    ) {}
 
     @Post()
     async create(@Body() createDoublecheckDto: CreateDoublecheckDto) {
-        return this.doublecheckService.create(createDoublecheckDto);
+        const doubleCheck = await this.doublecheckService.create(
+            createDoublecheckDto,
+        );
+
+        doubleCheck.courses?.length &&
+            this.kafkaProducer.send({
+                topic: 'double-check',
+                messages: doubleCheck.courses?.map((course) => {
+                    return {
+                        key: 'double-check',
+                        value: JSON.stringify(course),
+                    };
+                }),
+            });
+
+        return doubleCheck;
     }
 
     @UseGuards(JwtGuard)

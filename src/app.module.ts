@@ -24,8 +24,8 @@ import { AuthModule } from './auth/auth.module';
             logging: false,
             entities: [ErrorSchema, CourseSchema, DoubleCheckSchema],
         }),
-        DoublecheckModule,
         AuthModule,
+        DoublecheckModule,
     ],
 })
 export class AppModule {}
