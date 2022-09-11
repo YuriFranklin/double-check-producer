@@ -1,9 +1,6 @@
 import { Structure } from '../../../../domain/entity/Structure';
-import { Template } from '../../../../domain/entity/Template';
-import {
-    Structure as StructureSchema,
-    Template as TemplateProps,
-} from '../entity/Structure';
+import { Structure as StructureSchema } from '../entity/Structure';
+import { TemplateTypeORMMapper } from './TemplateTypeORMMapper';
 
 export class StructureTypeORMMapper {
     public static toOrmEntity(structure: Structure): StructureSchema {
@@ -14,33 +11,20 @@ export class StructureTypeORMMapper {
         ormStructureSchema.id = id;
         ormStructureSchema.name = name;
         ormStructureSchema.templates = templates.map((template) =>
-            template.toJSON(),
+            TemplateTypeORMMapper.toOrmEntity(template),
         );
-
         return ormStructureSchema;
     }
 
-    private static createTemplateRecurrences(
-        inputs: TemplateProps[],
-    ): Template[] {
-        if (!Array.isArray(inputs)) return [];
-
-        return inputs.map(
-            (input) =>
-                new Template({
-                    ...input,
-                    children: this.createTemplateRecurrences(input.children),
-                }),
-        );
-    }
-
     public static toDomainEntity(structure: StructureSchema): Structure {
-        const { _id, name, templates: rawTemplates } = structure;
+        const { id, name, templates: rawTemplates } = structure;
 
-        const templates = this.createTemplateRecurrences(rawTemplates);
+        const templates = rawTemplates.map((template) =>
+            TemplateTypeORMMapper.toDomainEntity(template),
+        );
 
         const domainStructure = Structure.create({
-            id: _id,
+            id,
             name,
             templates,
         });

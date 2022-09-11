@@ -3,35 +3,34 @@ import { DataSource } from 'typeorm';
 import { Structure } from '../entity/Structure';
 import crypto from 'crypto';
 import 'dotenv/config';
+import { Template } from '../entity/Template';
 
 describe('Structure Tests', () => {
-    it('Should create a new Structure TypeOrm Entity', async () => {
-        const dataSource = new DataSource({
-            type: 'mongodb',
-            url: process.env.MONGODB_URL,
-            database: process.env.MONGODB_DATABASE,
-            ssl: true,
+    let dataSource: DataSource;
+    beforeAll(async () => {
+        dataSource = new DataSource({
+            type: 'postgres',
+            host: process.env.PG_HOSTNAME,
+            username: process.env.PG_USER_NAME,
+            password: process.env.PG_PASSWORD,
+            port: Number(process.env.PG_PORT),
+            database: 'double_check',
             synchronize: true,
-            entities: [Structure],
+            logging: true,
+            entities: [Structure, Template],
         });
-
         await dataSource.initialize();
-
+    });
+    it('Should create a new Structure TypeOrm Entity', async () => {
         const structureRepository = dataSource.getRepository(Structure);
 
         const props = {
             id: crypto.randomUUID(),
             name: 'Test StructureSchema',
-            templates: [
-                {
-                    name: 'test',
-                },
-            ],
+            templates: [],
         };
 
-        const structure = structureRepository.create(props);
-
-        await dataSource.destroy();
+        const structure = await structureRepository.create(props);
 
         expect(structure).toEqual(
             expect.objectContaining({
@@ -40,5 +39,8 @@ describe('Structure Tests', () => {
                 templates: props.templates,
             }),
         );
+    });
+    afterAll(async () => {
+        await dataSource.destroy();
     });
 });
