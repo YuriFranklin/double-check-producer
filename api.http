@@ -31,3 +31,23 @@ client_id=double-check
 &grant_type=password
 &username=teste
 &password=test
+###
+#CREATE NEW STRUCTURE
+POST http://localhost:3000/structure
+Content-Type: application/json
+
+{
+   "name":"Test structure",
+   "templates":[
+      {
+         "name":"Template Test",
+         "description":"This is a template test",
+         "isOptional":false,
+         "warnIfNotFound":true,
+         "hasNameOfCourseInContent":false,
+         "disponibility":true,
+         "type":"document",
+         "hasChildren":false
+      }
+   ]
+}

@@ -6,6 +6,9 @@ import { Course as CourseSchema } from './@core/infra/db/typeorm/entity/Course';
 import { DoubleCheck as DoubleCheckSchema } from './@core/infra/db/typeorm/entity/DoubleCheck';
 import { DoublecheckModule } from './doublecheck/doublecheck.module';
 import { AuthModule } from './auth/auth.module';
+import { StructureModule } from './structure/structure.module';
+import { Structure as StructureSchema } from './@core/infra/db/typeorm/entity/Structure';
+import { Template as TemplateSchema } from './@core/infra/db/typeorm/entity/Template';
 
 @Module({
     imports: [
@@ -22,10 +25,17 @@ import { AuthModule } from './auth/auth.module';
             database: 'double_check',
             synchronize: true,
             logging: false,
-            entities: [ErrorSchema, CourseSchema, DoubleCheckSchema],
+            entities: [
+                ErrorSchema,
+                CourseSchema,
+                DoubleCheckSchema,
+                StructureSchema,
+                TemplateSchema,
+            ],
         }),
         AuthModule,
         DoublecheckModule,
+        StructureModule,
     ],
 })
 export class AppModule {}

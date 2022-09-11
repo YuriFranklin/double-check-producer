@@ -11,11 +11,12 @@ import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllD
 import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
 import { ClientsModule, Transport, ClientKafka } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
+import { Template as TemplateSchema } from '../@core/infra/db/typeorm/entity/Template';
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
-        TypeOrmModule.forFeature([DoubleCheckSchema]),
+        TypeOrmModule.forFeature([DoubleCheckSchema, TemplateSchema]),
         ClientsModule.register([
             {
                 name: 'KAFKA_SERVICE',

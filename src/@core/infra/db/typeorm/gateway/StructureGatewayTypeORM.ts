@@ -17,7 +17,18 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
 
     async insert(structure: Structure): Promise<void> {
         const ormStructure = StructureTypeORMMapper.toOrmEntity(structure);
-        await this.ormRepository.insert(ormStructure);
+        await this.dataSource.manager.transaction(
+            async (transactionalEntityManager) => {
+                await Promise.all(
+                    ormStructure.templates?.map(
+                        async (template) =>
+                            await transactionalEntityManager.save(template),
+                    ),
+                );
+
+                await transactionalEntityManager.save(ormStructure);
+            },
+        );
     }
 
     async listAll(): Promise<Structure[]> {

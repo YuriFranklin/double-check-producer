@@ -19,7 +19,7 @@ export class CreateStructureUseCase {
     }
 
     private createTemplateRecurrence(input: TemplateDTO): Template {
-        const templates = input.children.map((template) =>
+        const templates = input.children?.map((template) =>
             this.createTemplateRecurrence(template),
         );
         return new Template({ ...input, children: templates });
