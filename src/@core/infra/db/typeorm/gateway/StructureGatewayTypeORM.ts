@@ -1,8 +1,9 @@
 import { StructureGatewayInterface } from '../../../../domain/gateway/StructureGatewayInterface';
 import { Structure } from '../../../../domain/entity/Structure';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Structure as StructureSchema } from '../entity/Structure';
 import { StructureTypeORMMapper } from '../mapper/StructureTypeORMMapper';
+import { Template as TemplateSchema } from '../entity/Template';
 
 export class StructureGatewayTypeORM implements StructureGatewayInterface {
     private ormRepository: Repository<StructureSchema>;
@@ -11,8 +12,29 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
         this.ormRepository = this.dataSource.getRepository(StructureSchema);
     }
 
-    findAll(): Promise<Structure[]> {
-        throw new Error('Method not implemented.');
+    async findAll(): Promise<Structure[]> {
+        const ormStructures = await this.ormRepository.find({
+            relations: ['templates'],
+        });
+
+        return Promise.all(
+            ormStructures.map(async (ormStructure) => {
+                ormStructure.templates = await Promise.all(
+                    ormStructure.templates?.map((template) =>
+                        this.findTemplateRecurrence(template),
+                    ),
+                );
+                return StructureTypeORMMapper.toDomainEntity(ormStructure);
+            }),
+        );
+    }
+
+    async findTemplateRecurrence(
+        template: TemplateSchema,
+    ): Promise<TemplateSchema> {
+        return this.dataSource.manager
+            .getTreeRepository(TemplateSchema)
+            .findDescendantsTree(template, { depth: 10 }); // TODO: FIND EFFICIENT TO DO IT
     }
 
     async insert(structure: Structure): Promise<void> {
@@ -22,7 +44,10 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
                 await Promise.all(
                     ormStructure.templates?.map(
                         async (template) =>
-                            await transactionalEntityManager.save(template),
+                            await this.insertTemplateRecurrence(
+                                template,
+                                transactionalEntityManager,
+                            ),
                     ),
                 );
 
@@ -31,17 +56,22 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
         );
     }
 
-    async listAll(): Promise<Structure[]> {
-        const ormStructures = await this.ormRepository.find();
-
-        return ormStructures.map((ormStructure) =>
-            StructureTypeORMMapper.toDomainEntity(ormStructure),
+    private async insertTemplateRecurrence(
+        template: TemplateSchema,
+        transactionalEntityManager: EntityManager,
+    ) {
+        await transactionalEntityManager.save(template);
+        await Promise.all(
+            template.children?.map((t) =>
+                this.insertTemplateRecurrence(t, transactionalEntityManager),
+            ),
         );
     }
 
     async find(structureId: string): Promise<Structure> {
         const ormStructure = await this.ormRepository.findOne({
             where: { id: structureId },
+            relations: ['templates'],
         });
 
         if (!ormStructure) throw new Error('Structure has not founded');

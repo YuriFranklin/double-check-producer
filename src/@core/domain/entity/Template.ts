@@ -44,6 +44,10 @@ export class Template {
         return this.props.children;
     }
 
+    public setChildren(children: Template[]) {
+        this.props.children = children;
+    }
+
     toJSON(): TemplateToJSON {
         return {
             ...this.props,

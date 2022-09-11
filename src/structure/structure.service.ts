@@ -1,22 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { FindStructuresUseCase } from '../@core/application/usecase/FindStructureUseCase';
 import { CreateStructureUseCase } from '../@core/application/usecase/CreateStructureUseCase';
 import { CreateStructureDto } from './dto/create-structure.dto';
 import { UpdateStructureDto } from './dto/update-structure.dto';
+import { FindAllStructureUseCase } from '../@core/application/usecase/FindAllStructureUseCase';
 
 @Injectable()
 export class StructureService {
-    constructor(private createStructureUseCase: CreateStructureUseCase) {}
+    constructor(
+        private createStructureUseCase: CreateStructureUseCase,
+        private findStructureUseCase: FindStructuresUseCase,
+        private findAllStructureUseCase: FindAllStructureUseCase,
+    ) {}
 
     async create(createStructureDto: CreateStructureDto) {
         return this.createStructureUseCase.execute(createStructureDto);
     }
 
-    findAll() {
-        return `This action returns all structure`;
+    async findAll() {
+        return this.findAllStructureUseCase.execute();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} structure`;
+    async findOne(id: number) {
+        return this.findStructureUseCase.execute(id);
     }
 
     update(id: number, updateStructureDto: UpdateStructureDto) {

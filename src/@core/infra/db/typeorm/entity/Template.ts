@@ -4,11 +4,16 @@ import {
     JoinTable,
     ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryColumn,
+    Tree,
+    TreeChildren,
+    TreeParent,
 } from 'typeorm';
 import { Structure } from './Structure';
 
 @Entity('template')
+@Tree('nested-set')
 export class Template {
     @PrimaryColumn('uuid')
     public id: string;
@@ -52,15 +57,10 @@ export class Template {
     @Column('boolean')
     public hasChildren: boolean;
 
-    @ManyToMany((type) => Template, (template) => template.children, {
-        nullable: true,
-    })
-    @JoinTable()
+    @TreeParent()
     public parent?: Template;
 
-    @ManyToMany(() => Template, (template) => template.parent, {
-        nullable: true,
-    })
+    @TreeChildren()
     public children?: Template[];
 
     @ManyToOne(() => Structure, (structure) => structure.templates, {

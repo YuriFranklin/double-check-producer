@@ -18,11 +18,20 @@ export class CreateStructureUseCase {
         return structure.toJSON();
     }
 
-    private createTemplateRecurrence(input: TemplateDTO): Template {
-        const templates = input.children?.map((template) =>
-            this.createTemplateRecurrence(template),
-        );
-        return new Template({ ...input, children: templates });
+    private createTemplateRecurrence(
+        input: TemplateDTO,
+        parentId?: string,
+    ): Template {
+        const { children, ...rest } = input;
+        const template = new Template({ ...rest, parentId });
+
+        children &&
+            template.setChildren(
+                children.map((child) =>
+                    this.createTemplateRecurrence(child, template.toJSON().id),
+                ),
+            );
+        return template;
     }
 }
 

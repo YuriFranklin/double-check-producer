@@ -47,7 +47,35 @@ Content-Type: application/json
          "hasNameOfCourseInContent":false,
          "disponibility":true,
          "type":"document",
-         "hasChildren":false
+         "hasChildren":true,
+         "children":[
+            {
+               "name":"Template Test",
+               "description":"This is a template test",
+               "isOptional":false,
+               "warnIfNotFound":true,
+               "hasNameOfCourseInContent":false,
+               "disponibility":true,
+               "type":"document",
+               "hasChildren":true,
+               "children":[
+                  {
+                     "name":"Template Test",
+                     "description":"This is a template test",
+                     "isOptional":false,
+                     "warnIfNotFound":true,
+                     "hasNameOfCourseInContent":false,
+                     "disponibility":true,
+                     "type":"document",
+                     "hasChildren":false
+                  }
+               ]
+            }
+         ]
       }
    ]
 }
+
+###
+#FIND ALL STRUCTURES
+GET http://localhost:3000/structure
