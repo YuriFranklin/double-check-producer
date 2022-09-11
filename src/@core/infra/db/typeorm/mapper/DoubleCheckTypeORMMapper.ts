@@ -4,13 +4,15 @@ import { CourseTypeORMMapper } from './CourseTypeORMMapper';
 
 export class DoubleCheckTypeORMMapper {
     public static toOrmEntity(doubleCheck: DoubleCheck): DoubleCheckSchema {
-        const { id, checked, courses, createdAt } = doubleCheck.props;
+        const { id, checked, courses, createdAt, structureId } =
+            doubleCheck.props;
 
         const ormDoubleCheckSchema = new DoubleCheckSchema();
 
         ormDoubleCheckSchema.id = id;
         ormDoubleCheckSchema.checked = checked;
         ormDoubleCheckSchema.createdAt = createdAt;
+        ormDoubleCheckSchema.structureId = structureId;
         ormDoubleCheckSchema.courses = courses.map((c) =>
             CourseTypeORMMapper.toORMEntity(c, ormDoubleCheckSchema),
         );

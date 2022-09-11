@@ -87,7 +87,6 @@ describe('DoubleCheckTypeOrmRepository Tests', () => {
         const test = await dataSource
             .getRepository(CourseSchema)
             .find({ relations: ['doubleCheck'] });
-        console.log(test);
     });
 
     afterAll(async () => {

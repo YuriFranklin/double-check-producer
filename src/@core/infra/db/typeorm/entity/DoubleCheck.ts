@@ -9,6 +9,9 @@ export class DoubleCheck {
     @Column('boolean')
     public checked: boolean;
 
+    @Column('text')
+    public structureId: string;
+
     @Column('timestamptz', { nullable: true })
     public createdAt: Date;
 

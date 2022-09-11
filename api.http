@@ -3,12 +3,13 @@ POST http://localhost:3000/doublecheck
 Content-Type: application/json
 
 {
-   "courses":[
-      {
+    "structureId": "1234",
+    "courses": [
+        {
          "name":"Test course",
          "courseId":"1234"
-      }
-   ]
+         }
+        ]
 }
 
 ###

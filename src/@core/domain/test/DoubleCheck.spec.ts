@@ -20,8 +20,8 @@ describe('DoubleCheck Tests', () => {
 
         const courseProps: CourseProps = {
             name: 'Test Course',
-            id: '123',
             errors: [error],
+            courseId: '123',
         };
 
         const course = Course.create(courseProps);
@@ -29,6 +29,7 @@ describe('DoubleCheck Tests', () => {
         const doubleCheckProps: DoubleCheckProps = {
             courses: [course],
             checked: false,
+            structureId: '123',
         };
 
         const doubleCheck = DoubleCheck.create(doubleCheckProps);

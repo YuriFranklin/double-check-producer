@@ -26,7 +26,7 @@ describe('DoubleCheckGatewayMemory Tests', () => {
 
         const courseProps: CourseProps = {
             name: 'Test Course',
-            id: '123',
+            courseId: '123',
             errors: [error],
         };
 
@@ -35,6 +35,7 @@ describe('DoubleCheckGatewayMemory Tests', () => {
         const doubleCheckProps: DoubleCheckProps = {
             courses: [course],
             checked: false,
+            structureId: '123',
         };
 
         const doubleCheck = DoubleCheck.create(doubleCheckProps);

@@ -6,6 +6,7 @@ export type DoubleCheckProps = {
     courses: Course[];
     checked?: boolean;
     createdAt?: Date;
+    structureId: string;
 };
 
 export class DoubleCheck {

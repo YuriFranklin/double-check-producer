@@ -2,6 +2,7 @@ export class CreateDoublecheckDto {
     id?: string;
     courses: Course[];
     checked?: boolean;
+    structureId: string;
 }
 
 type Course = {

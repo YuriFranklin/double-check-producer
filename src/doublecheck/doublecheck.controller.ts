@@ -33,7 +33,10 @@ export class DoublecheckController {
                 messages: doubleCheck.courses?.map((course) => {
                     return {
                         key: 'double-check',
-                        value: JSON.stringify(course),
+                        value: JSON.stringify({
+                            structureId: doubleCheck.structureId,
+                            course,
+                        }),
                     };
                 }),
             });
