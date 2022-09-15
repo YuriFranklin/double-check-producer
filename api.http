@@ -79,3 +79,7 @@ Content-Type: application/json
 ###
 #FIND ALL STRUCTURES
 GET http://localhost:3000/structure
+
+###
+#DELETE STRUCTURE
+DELETE http://localhost:3000/structure/5e1f3af0-4d36-4bb9-92fa-cd39ef1ebaeb

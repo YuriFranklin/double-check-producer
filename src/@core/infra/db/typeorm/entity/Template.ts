@@ -57,15 +57,18 @@ export class Template {
     @Column('boolean')
     public hasChildren: boolean;
 
-    @TreeParent()
+    @TreeParent({ onDelete: 'CASCADE' })
     public parent?: Template;
 
-    @TreeChildren()
+    @TreeChildren({
+        cascade: ['insert', 'recover', 'update', 'soft-remove', 'remove'],
+    })
     public children?: Template[];
 
     @ManyToOne(() => Structure, (structure) => structure.templates, {
         nullable: true,
         cascade: ['insert', 'recover', 'update', 'soft-remove'],
+        onDelete: 'CASCADE',
     })
     @JoinTable()
     public structure?: Structure;

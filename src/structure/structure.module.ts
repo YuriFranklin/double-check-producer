@@ -9,12 +9,19 @@ import { getDataSourceToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Structure as StructureSchema } from '../@core/infra/db/typeorm/entity/Structure';
 import { FindStructuresUseCase } from '../@core/application/usecase/FindStructureUseCase';
 import { FindAllStructureUseCase } from '../@core/application/usecase/FindAllStructureUseCase';
+import { DeleteStructureUseCase } from '../@core/application/usecase/DeleteStructureUseCase';
 
 @Module({
     imports: [TypeOrmModule.forFeature([StructureSchema])],
     controllers: [StructureController],
     providers: [
         StructureService,
+        {
+            provide: DeleteStructureUseCase,
+            useFactory: (repository: StructureGatewayInterface) =>
+                new DeleteStructureUseCase(repository),
+            inject: [StructureGatewayTypeORM],
+        },
         {
             provide: FindAllStructureUseCase,
             useFactory: (repository: StructureGatewayInterface) =>

@@ -11,7 +11,6 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
     constructor(private dataSource: DataSource) {
         this.ormRepository = this.dataSource.getRepository(StructureSchema);
     }
-
     async findAll(): Promise<Structure[]> {
         const ormStructures = await this.ormRepository.find({
             relations: ['templates'],
@@ -41,6 +40,8 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
         const ormStructure = StructureTypeORMMapper.toOrmEntity(structure);
         await this.dataSource.manager.transaction(
             async (transactionalEntityManager) => {
+                await transactionalEntityManager.save(ormStructure);
+
                 await Promise.all(
                     ormStructure.templates?.map(
                         async (template) =>
@@ -50,8 +51,6 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
                             ),
                     ),
                 );
-
-                await transactionalEntityManager.save(ormStructure);
             },
         );
     }
@@ -77,5 +76,9 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
         if (!ormStructure) throw new Error('Structure has not founded');
 
         return StructureTypeORMMapper.toDomainEntity(ormStructure);
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.ormRepository.delete(id);
     }
 }

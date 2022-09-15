@@ -12,7 +12,7 @@ export class Structure {
     @OneToMany(() => Template, (template) => template.structure, {
         nullable: true,
         eager: true,
-        cascade: ['insert', 'recover', 'update', 'soft-remove'],
+        cascade: ['insert', 'recover', 'update', 'soft-remove', 'remove'],
     })
     public templates: Template[];
 }
