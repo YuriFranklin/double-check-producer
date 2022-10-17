@@ -10,9 +10,11 @@ export class StructureTypeORMMapper {
 
         ormStructureSchema.id = id;
         ormStructureSchema.name = name;
-        ormStructureSchema.templates = templates.map((template) =>
-            TemplateTypeORMMapper.toOrmEntity(template),
-        );
+        templates.length &&
+            (ormStructureSchema.templates = templates.map((template) =>
+                TemplateTypeORMMapper.toOrmEntity(template),
+            ));
+
         return ormStructureSchema;
     }
 

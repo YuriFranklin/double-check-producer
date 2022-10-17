@@ -5,4 +5,5 @@ export interface StructureGatewayInterface {
     findAll(): Promise<Structure[]>;
     find(id: string): Promise<Structure>;
     delete(id: string): Promise<void>;
+    update(id: string, structure: Structure): Promise<void>;
 }

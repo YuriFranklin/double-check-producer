@@ -1,5 +1,5 @@
 #INSERT NEW DOUBLECHECK
-POST http://localhost:3000/doublecheck
+POST http://localhost:4000/doublecheck
 Content-Type: application/json
 
 {
@@ -14,12 +14,12 @@ Content-Type: application/json
 
 ###
 #FIND ALL DOUBLECHECK
-GET http://localhost:3000/doublecheck
+GET http://localhost:4000/doublecheck
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJYUEI2ZXl5SFdUTTEyVS1pLWJtdnJ2TDdnZHd0N25VRjYtWkU4VHNIanQ0In0.eyJleHAiOjE2NjI2ODU5ODMsImlhdCI6MTY2MjY4NTY4MywianRpIjoiYzliNWIyNTgtYzYyMC00ZWUzLTlhMzAtZDVlYzlkMzY5MWFmIiwiaXNzIjoiaHR0cHM6Ly95dXJpLmRldi5icjo4NDQzL2F1dGgvcmVhbG1zL2F1dG9tYWN0aW9uIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjNjYjkwZjhkLTRiNmQtNDcwMy1iNDNiLWRjZmUyMTNkYjA3MyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRvdWJsZS1jaGVjayIsInNlc3Npb25fc3RhdGUiOiI2NTA3NDBmMi1iMDA4LTQ3OWMtODdiNS0zMjJjNTg1NDE5MTYiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1hdXRvbWFjdGlvbiIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiNjUwNzQwZjItYjAwOC00NzljLTg3YjUtMzIyYzU4NTQxOTE2IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0ZSBUZXN0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdGUiLCJnaXZlbl9uYW1lIjoiVGVzdGUiLCJmYW1pbHlfbmFtZSI6IlRlc3QiLCJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSJ9.ktopjn1Mb7bd8YH0n-Vqfdqxs1qlCS1aTOTVttv2IPcciQRVOhDb_weCDMYvaJA1MDDSiWJt8LkOMafdItwRr9xZx4bZ8E_g3NZ7FCau0GfhvHoB0cJpIPnvqY6B7L-0TsKHSsUl2zBAw3visfkHXUab9X4aNKdzxeUGyae9aOv9EkDRU7OLuEXnx7TweWw7RORh8gO8wOyVHIM0lUl0XQmkfsmc3ZMd4DvjhNIad8crGI5Mkrgzvqa3O8dAA1Rgkd071Whh0M3LQSGtBC9zohd3Z6ZFfMpDH_aY0cl7yMnmCan7kF0z2Go8UuQCgYo5VngLUZougLOfc4Qh09CELA
 
 ###
 #FIND DOUBLECHECK
-GET http://localhost:3000/doublecheck/a26b2ed8-7fea-46c3-9a4d-9f24d439f07d
+GET http://localhost:3000/doublecheck/49d7b6e4-5bac-4211-9dc6-433dc64c2641
 
 ###
 #LOGIN
@@ -78,8 +78,29 @@ Content-Type: application/json
 
 ###
 #FIND ALL STRUCTURES
-GET http://localhost:3000/structure
+GET http://localhost:3000/structure/
 
 ###
 #DELETE STRUCTURE
 DELETE http://localhost:3000/structure/5e1f3af0-4d36-4bb9-92fa-cd39ef1ebaeb
+
+###
+#UPDATE STRUCTURE
+PATCH  http://localhost:3000/structure/49d7b6e4-5bac-4211-9dc6-433dc64c2641
+Content-Type: application/json
+
+{
+   "name":"Test struct12313ure",
+   "templates":[
+      {
+         "name":"Template Test",
+         "description":"This is a template test",
+         "isOptional":false,
+         "warnIfNotFound":true,
+         "hasNameOfCourseInContent":false,
+         "disponibility":true,
+         "type":"document",
+         "hasChildren":true
+      }
+   ]
+}

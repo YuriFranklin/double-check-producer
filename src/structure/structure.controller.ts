@@ -30,13 +30,14 @@ export class StructureController {
         return this.structureService.findOne(+id);
     }
 
-    /*     @Patch(':id')
+    @Patch(':id')
     update(
         @Param('id') id: string,
         @Body() updateStructureDto: UpdateStructureDto,
     ) {
-        return this.structureService.update(+id, updateStructureDto);
-    } */
+        console.log(updateStructureDto);
+        return this.structureService.update(id, updateStructureDto);
+    }
 
     @Delete(':id')
     remove(@Param('id') id: string) {

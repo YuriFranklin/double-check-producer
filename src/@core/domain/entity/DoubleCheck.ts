@@ -3,6 +3,7 @@ import crypto from 'crypto';
 
 export type DoubleCheckProps = {
     id?: string;
+    name: string;
     courses: Course[];
     checked?: boolean;
     createdAt?: Date;

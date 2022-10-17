@@ -5,6 +5,7 @@ import { CreateStructureDto } from './dto/create-structure.dto';
 import { UpdateStructureDto } from './dto/update-structure.dto';
 import { FindAllStructureUseCase } from '../@core/application/usecase/FindAllStructureUseCase';
 import { DeleteStructureUseCase } from '../@core/application/usecase/DeleteStructureUseCase';
+import { UpdateStructureUseCase } from '../@core/application/usecase/UpdateStructureUseCase';
 
 @Injectable()
 export class StructureService {
@@ -13,6 +14,7 @@ export class StructureService {
         private findStructureUseCase: FindStructuresUseCase,
         private findAllStructureUseCase: FindAllStructureUseCase,
         private deleteStructureUseCase: DeleteStructureUseCase,
+        private updateStructureUseCase: UpdateStructureUseCase,
     ) {}
 
     async create(createStructureDto: CreateStructureDto) {
@@ -27,8 +29,8 @@ export class StructureService {
         return this.findStructureUseCase.execute(id);
     }
 
-    update(id: number, updateStructureDto: UpdateStructureDto) {
-        return `This action updates a #${id} structure`;
+    update(id: string, updateStructureDto: UpdateStructureDto) {
+        return this.updateStructureUseCase.execute(id, updateStructureDto);
     }
 
     async remove(id: string) {

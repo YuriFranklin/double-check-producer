@@ -36,7 +36,7 @@ export class TemplateTypeORMMapper {
         ormSchema.hasNameOfCourseInContent = hasNameOfCourseInContent;
         ormSchema.hasChildren = hasChildren;
         ormSchema.isOptional = isOptional;
-        ormSchema.beforeAlt = beforeAlt;
+        beforeAlt && (ormSchema.beforeAlt = beforeAlt);
         ormSchema.beforeId = beforeId;
         ormSchema.warnIfNotFound = warnIfNotFound;
         ormSchema.xor = xor;

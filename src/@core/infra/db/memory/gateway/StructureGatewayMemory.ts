@@ -4,6 +4,15 @@ import { StructureGatewayInterface } from '../../../../domain/gateway/StructureG
 export class StructureGatewayMemory implements StructureGatewayInterface {
     private structures: Structure[] = [];
 
+    async update(id: any, structure: Structure): Promise<void> {
+        const index = this.structures.findIndex(
+            (dCheck) => dCheck.props.id === id,
+        );
+        if (!index) throw new Error('Item not founded.');
+
+        this.structures[index] = structure;
+    }
+
     async find(id: string): Promise<Structure> {
         return this.structures.find((structure) => structure.props.id === id);
     }

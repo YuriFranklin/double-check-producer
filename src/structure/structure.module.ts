@@ -10,12 +10,19 @@ import { Structure as StructureSchema } from '../@core/infra/db/typeorm/entity/S
 import { FindStructuresUseCase } from '../@core/application/usecase/FindStructureUseCase';
 import { FindAllStructureUseCase } from '../@core/application/usecase/FindAllStructureUseCase';
 import { DeleteStructureUseCase } from '../@core/application/usecase/DeleteStructureUseCase';
+import { UpdateStructureUseCase } from '../@core/application/usecase/UpdateStructureUseCase';
 
 @Module({
     imports: [TypeOrmModule.forFeature([StructureSchema])],
     controllers: [StructureController],
     providers: [
         StructureService,
+        {
+            provide: UpdateStructureUseCase,
+            useFactory: (repository: StructureGatewayInterface) =>
+                new UpdateStructureUseCase(repository),
+            inject: [StructureGatewayTypeORM],
+        },
         {
             provide: DeleteStructureUseCase,
             useFactory: (repository: StructureGatewayInterface) =>

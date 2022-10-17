@@ -51,6 +51,8 @@ describe('DoubleCheck Tests', () => {
             .create(courseProps);
 
         const doubleCheckProps: DoubleCheckSchema = {
+            structureId: '1',
+            name: 'Teste',
             createdAt: new Date(),
             courses: [course],
             checked: false,

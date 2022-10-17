@@ -54,6 +54,8 @@ describe('DoubleCheckTypeOrmRepository Tests', () => {
         const course = Course.create(courseProps);
 
         const doubleCheckProps: DoubleCheckProps = {
+            name: 'Test 5',
+            structureId: '1',
             courses: [course],
             checked: false,
         };
@@ -78,8 +80,13 @@ describe('DoubleCheckTypeOrmRepository Tests', () => {
         });
     });
 
-    it('Should find all structure in repository', async () => {
-        const doubleChecks = await gateway.findAll();
+    it('Should find all doublechecks in repository', async () => {
+        const doubleChecks = await gateway.findAll({
+            limit: 5,
+            start: 1,
+        });
+
+        console.log(doubleChecks);
         expect(doubleChecks[0]).toBeInstanceOf(DoubleCheck);
     });
 

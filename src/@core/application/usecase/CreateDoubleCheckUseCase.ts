@@ -27,6 +27,7 @@ export type CreateDoubleCheckUseCaseInput = {
     courses: CourseInput[];
     checked?: boolean;
     structureId: string;
+    name: string;
 };
 
 export type CreateDoubleCheckUseCaseOutput = {
@@ -34,6 +35,7 @@ export type CreateDoubleCheckUseCaseOutput = {
     courses: CourseOutput[];
     checked: boolean;
     structureId: string;
+    name: string;
 };
 
 export type CourseInput = {

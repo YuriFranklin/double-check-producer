@@ -15,6 +15,9 @@ export class DoubleCheck {
     @Column('timestamptz', { nullable: true })
     public createdAt: Date;
 
+    @Column('text')
+    public name: string;
+
     @OneToMany(() => Course, (course) => course.doubleCheck, {
         nullable: true,
         eager: true,

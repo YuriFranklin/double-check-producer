@@ -27,6 +27,7 @@ describe('DoubleCheck Tests', () => {
         const course = Course.create(courseProps);
 
         const doubleCheckProps: DoubleCheckProps = {
+            name: 'Test doublecheck',
             courses: [course],
             checked: false,
             structureId: '123',

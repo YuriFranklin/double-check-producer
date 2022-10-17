@@ -44,7 +44,7 @@ export class DoublecheckController {
         return doubleCheck;
     }
 
-    @UseGuards(JwtGuard)
+    //@UseGuards(JwtGuard)
     @Get()
     async findAll() {
         return this.doublecheckService.findAll();
