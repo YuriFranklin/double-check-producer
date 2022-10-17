@@ -87,7 +87,7 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
             skip: start,
             cache: true,
             order,
-            where: mountFilter,
+            ...(mountFilter.length && { where: mountFilter }),
         });
 
         const totalItems = ormResult[1];
@@ -144,9 +144,7 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
         checked?: boolean;
         dateStart?: Date;
         dateEnd?: Date;
-    }):
-        | FindOptionsWhere<DoubleCheckSchema>
-        | FindOptionsWhere<DoubleCheckSchema>[] {
+    }): FindOptionsWhere<DoubleCheckSchema>[] {
         const dateStart =
             filter?.dateStart &&
             new Date(
@@ -183,35 +181,38 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
                 name: Like(`%${trimValue}%`),
             });
 
-        dateStart && appliedFilter.length
-            ? appliedFilter.forEach(
-                  (filter, index) =>
-                      (appliedFilter[index] = {
-                          ...filter,
-                          createdAt: MoreThanOrEqual(dateStart),
-                      }),
-              )
-            : appliedFilter.push({ createdAt: MoreThanOrEqual(dateStart) });
+        if (dateStart)
+            appliedFilter.length
+                ? appliedFilter.forEach(
+                      (filter, index) =>
+                          (appliedFilter[index] = {
+                              ...filter,
+                              createdAt: MoreThanOrEqual(dateStart),
+                          }),
+                  )
+                : appliedFilter.push({ createdAt: MoreThanOrEqual(dateStart) });
 
-        dateEnd && appliedFilter.length
-            ? appliedFilter.forEach(
-                  (filter, index) =>
-                      (appliedFilter[index] = {
-                          ...filter,
-                          createdAt: LessThanOrEqual(dateEnd),
-                      }),
-              )
-            : appliedFilter.push({ createdAt: LessThanOrEqual(dateEnd) });
+        if (dateEnd)
+            appliedFilter.length
+                ? appliedFilter.forEach(
+                      (filter, index) =>
+                          (appliedFilter[index] = {
+                              ...filter,
+                              createdAt: LessThanOrEqual(dateEnd),
+                          }),
+                  )
+                : appliedFilter.push({ createdAt: LessThanOrEqual(dateEnd) });
 
-        filter && typeof filter.checked === 'undefined' && appliedFilter.length
-            ? appliedFilter.forEach(
-                  (filter, index) =>
-                      (appliedFilter[index] = {
-                          ...filter,
-                          checked: filter.checked,
-                      }),
-              )
-            : appliedFilter.push({ checked: filter.checked });
+        if (filter?.checked !== undefined)
+            appliedFilter.length
+                ? appliedFilter.forEach(
+                      (filter, index) =>
+                          (appliedFilter[index] = {
+                              ...filter,
+                              checked: filter.checked,
+                          }),
+                  )
+                : appliedFilter.push({ checked: filter.checked });
 
         return appliedFilter;
     }

@@ -23,6 +23,13 @@ export type Input = {
         property: 'id' | 'checked' | 'structureId' | 'name' | 'createdAt';
         order: 'ascending' | 'descending';
     };
+    filter?: {
+        value?: string;
+        properties?: ['id' | 'structureId' | 'name'];
+        checked?: boolean;
+        dateStart?: Date;
+        dateEnd?: Date;
+    };
 };
 
 export type Course = {

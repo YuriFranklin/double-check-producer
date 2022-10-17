@@ -81,13 +81,19 @@ describe('DoubleCheckTypeOrmRepository Tests', () => {
     });
 
     it('Should find all doublechecks in repository', async () => {
-        const doubleChecks = await gateway.findAll({
+        const output = await gateway.findAll({
             limit: 5,
-            start: 1,
+            start: 0,
+            filter: { checked: false, value: 'Test 5', properties: ['name'] },
         });
 
-        console.log(doubleChecks);
-        expect(doubleChecks[0]).toBeInstanceOf(DoubleCheck);
+        expect(output).toEqual({
+            totalItems: expect.any(Number),
+            result: expect.any(Array),
+            totalPages: expect.any(Number),
+            currentPage: expect.any(Number),
+            itemsPerPage: expect.any(Number),
+        });
     });
 
     it('Should find all courses', async () => {
