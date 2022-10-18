@@ -1,7 +1,14 @@
-import { DoubleCheckGatewayInterface } from '../../../../domain/gateway/DoubleCheckGatewayInterface';
+import {
+    DoubleCheckGatewayInterface,
+    findAllInput,
+    findAllOutput,
+} from '../../../../domain/gateway/DoubleCheckGatewayInterface';
 import { DoubleCheck } from '../../../../domain/entity/DoubleCheck';
 
 export class DoubleCheckGatewayMemory implements DoubleCheckGatewayInterface {
+    findAll({ limit, sortBy, start }: findAllInput): Promise<findAllOutput> {
+        throw new Error('Method not implemented.');
+    }
     private doubleChecks: DoubleCheck[] = [];
 
     async update(id: string, doubleCheck: DoubleCheck): Promise<DoubleCheck> {
@@ -30,9 +37,5 @@ export class DoubleCheckGatewayMemory implements DoubleCheckGatewayInterface {
 
     async insert(doubleCheck: DoubleCheck): Promise<void> {
         this.doubleChecks.push(doubleCheck);
-    }
-
-    async findAll(): Promise<DoubleCheck[]> {
-        return this.doubleChecks;
     }
 }

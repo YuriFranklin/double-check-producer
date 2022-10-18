@@ -7,11 +7,13 @@ import {
     Delete,
     UseGuards,
     Inject,
+    Query,
 } from '@nestjs/common';
 import { JwtGuard } from '../auth/jwt/jwt.guard';
 import { DoublecheckService } from './doublecheck.service';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
 import { Producer } from '@nestjs/microservices/external/kafka.interface';
+import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
 
 @Controller('doublecheck')
 export class DoublecheckController {
@@ -46,8 +48,8 @@ export class DoublecheckController {
 
     //@UseGuards(JwtGuard)
     @Get()
-    async findAll() {
-        return this.doublecheckService.findAll();
+    async findAll(@Query() reqParam: FindAllDoubleCheckDto) {
+        return this.doublecheckService.findAll(reqParam);
     }
 
     @Get(':id')
