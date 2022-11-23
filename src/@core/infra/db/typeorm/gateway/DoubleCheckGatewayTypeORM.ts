@@ -4,6 +4,7 @@ import {
     DataSource,
     FindOptionsOrder,
     FindOptionsWhere,
+    ILike,
     LessThanOrEqual,
     Like,
     MoreThanOrEqual,
@@ -160,7 +161,7 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
                 filter.dateEnd.getDate(),
             );
 
-        const trimValue = filter?.value?.trim();
+        const trimValue = filter?.value?.trim().toLowerCase();
 
         const appliedFilter:
             | FindOptionsWhere<DoubleCheckSchema>
@@ -168,17 +169,17 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
 
         filter?.properties?.includes('id') &&
             appliedFilter.push({
-                id: Like(`%${trimValue}%`),
+                id: ILike(`%${trimValue}%`),
             });
 
         filter?.properties?.includes('structureId') &&
             appliedFilter.push({
-                structureId: Like(`%${trimValue}%`),
+                structureId: ILike(`%${trimValue}%`),
             });
 
         filter?.properties?.includes('name') &&
             appliedFilter.push({
-                name: Like(`%${trimValue}%`),
+                name: ILike(`%${trimValue}%`),
             });
 
         if (dateStart)

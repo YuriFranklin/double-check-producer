@@ -15,6 +15,8 @@ export type Output = {
     id: string;
     courses: Course[];
     checked: boolean;
+    createdAt: string;
+    structureId: string;
 };
 
 export type Course = {
