@@ -4,12 +4,13 @@ import { TemplateTypeORMMapper } from './TemplateTypeORMMapper';
 
 export class StructureTypeORMMapper {
     public static toOrmEntity(structure: Structure): StructureSchema {
-        const { id, name, templates } = structure.props;
+        const { id, name, templates, createdAt } = structure.toJSON();
 
         const ormStructureSchema = new StructureSchema();
 
         ormStructureSchema.id = id;
         ormStructureSchema.name = name;
+        ormStructureSchema.createdAt = new Date(createdAt);
         templates.length &&
             (ormStructureSchema.templates = templates.map((template) =>
                 TemplateTypeORMMapper.toOrmEntity(template),

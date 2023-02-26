@@ -6,7 +6,7 @@ export class StructureGatewayMemory implements StructureGatewayInterface {
 
     async update(id: any, structure: Structure): Promise<void> {
         const index = this.structures.findIndex(
-            (dCheck) => dCheck.props.id === id,
+            (dCheck) => dCheck.toJSON().id === id,
         );
         if (!index) throw new Error('Item not founded.');
 
@@ -15,7 +15,7 @@ export class StructureGatewayMemory implements StructureGatewayInterface {
 
     async find(id: string): Promise<Structure> {
         const finded = this.structures.find(
-            (structure) => structure.props.id === id,
+            (structure) => structure.toJSON().id === id,
         );
 
         if (!finded) throw new Error('Item not finded.');
@@ -33,7 +33,7 @@ export class StructureGatewayMemory implements StructureGatewayInterface {
 
     async delete(id: string): Promise<void> {
         const index = this.structures.findIndex(
-            (dCheck) => dCheck.props.id === id,
+            (dCheck) => dCheck.toJSON().id === id,
         );
         if (!index) throw new Error('Item not founded.');
 

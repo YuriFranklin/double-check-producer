@@ -1,18 +1,18 @@
 import { Structure } from '../../domain/entity/Structure';
-import { Template } from '../../domain/entity/Template';
 import { StructureGatewayInterface } from '../../domain/gateway/StructureGatewayInterface';
 
 export class UpdateStructureUseCase {
     constructor(private repository: StructureGatewayInterface) {}
 
     async execute(id: string, input: Partial<Input>): Promise<Output> {
-        const founded = await this.repository.find(id);
+        const founded = await (await this.repository.find(id)).toJSON();
 
         if (!founded) throw 'Structure not founded';
 
         const structure = Structure.create({
-            ...founded.props,
+            ...founded,
             ...input,
+            createdAt: new Date(founded.createdAt),
             templates: [],
         });
 
@@ -20,7 +20,7 @@ export class UpdateStructureUseCase {
 
         const returnObj = {
             ...structure.toJSON(),
-            templates: founded.toJSON().templates,
+            templates: founded.templates,
         };
 
         return returnObj;

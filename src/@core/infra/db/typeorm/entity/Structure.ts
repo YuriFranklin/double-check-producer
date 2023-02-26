@@ -9,6 +9,9 @@ export class Structure {
     @Column('text')
     public name: string;
 
+    @Column('timestamptz')
+    public createdAt: Date;
+
     @OneToMany(() => Template, (template) => template.structure, {
         nullable: true,
         eager: true,

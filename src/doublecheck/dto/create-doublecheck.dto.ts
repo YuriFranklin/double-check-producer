@@ -13,8 +13,6 @@ import {
 } from 'class-validator';
 
 export class CreateDoublecheckDto {
-    id?: string;
-
     @IsNotEmpty()
     @IsString()
     name: string;

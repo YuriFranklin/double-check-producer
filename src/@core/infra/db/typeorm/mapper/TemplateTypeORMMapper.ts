@@ -53,14 +53,10 @@ export class TemplateTypeORMMapper {
         templateSchema: TemplateSchema,
         parent?: TemplateSchema,
     ): Template {
-        const children = templateSchema.children?.map((template) =>
-            this.toDomainEntity(template, templateSchema),
-        );
         const parentId = parent?.id;
-        const template = new Template({
+        const template = Template.create({
             ...templateSchema,
             parentId,
-            children,
         });
         return template;
     }

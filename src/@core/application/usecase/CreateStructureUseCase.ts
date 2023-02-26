@@ -23,7 +23,7 @@ export class CreateStructureUseCase {
         parentId?: string,
     ): Template {
         const { children, ...rest } = input;
-        const template = new Template({ ...rest, parentId });
+        const template = Template.create({ ...rest, parentId });
 
         children &&
             template.setChildren(
@@ -39,12 +39,14 @@ export type CreateStructureUseCaseInput = {
     name: string;
     id?: string;
     templates?: TemplateDTO[];
+    createdAt?: Date;
 };
 
 export type CreateStructureUseCaseOutput = {
     id: string;
     name: string;
     templates: TemplateDTO[];
+    createdAt: string;
 };
 
 type TemplateDTO = {
