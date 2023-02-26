@@ -16,6 +16,7 @@ import {
 import { DoubleCheckTypeORMMapper } from '../mapper/DoubleCheckTypeORMMapper';
 import NumericRange from 'src/types/NumericRange';
 import CreateArrayWithLengthX from 'src/types/CreateArrayWithLength';
+import NotFoundException from '../../../../domain/exceptions/NotFoundException';
 
 export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
     private ormRepository: Repository<DoubleCheckSchema>;
@@ -224,7 +225,7 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
             relations: ['courses'],
         });
 
-        if (!ormEntity) throw new Error('Item not finded.');
+        if (!ormEntity) throw new NotFoundException('Item not founded');
 
         return DoubleCheckTypeORMMapper.toDomainEntity(ormEntity);
     }

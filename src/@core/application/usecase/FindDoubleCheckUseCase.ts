@@ -4,8 +4,12 @@ export class FindDoubleCheckUseCase {
     constructor(private repository: DoubleCheckGatewayInterface) {}
 
     public async execute(id: Input): Promise<Output> {
-        const doubleCheck = await this.repository.find(id);
-        return doubleCheck.toJSON();
+        try {
+            const doubleCheck = await this.repository.find(id);
+            return doubleCheck.toJSON();
+        } catch (e) {
+            throw e;
+        }
     }
 }
 

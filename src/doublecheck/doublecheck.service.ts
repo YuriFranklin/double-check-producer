@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateDoubleCheckUseCase } from '../@core/application/usecase/CreateDoubleCheckUseCase';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
 import { UpdateDoublecheckDto } from './dto/update-doublecheck.dto';
 import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllDoubleCheckUseCase';
 import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
 import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
+import NotFoundException from '../@core/domain/exceptions/NotFoundException';
 
 @Injectable()
 export class DoublecheckService {
@@ -22,8 +23,21 @@ export class DoublecheckService {
         return this.findAllUseCase.execute(findAllDoubleCheckDto);
     }
 
-    findOne(id: string) {
-        return this.findUseCase.execute(id);
+    async findOne(id: string) {
+        try {
+            const founded = await this.findUseCase.execute(id);
+            return founded;
+        } catch (e) {
+            if (e instanceof NotFoundException) {
+                throw new HttpException(
+                    {
+                        status: HttpStatus.NOT_FOUND,
+                        error: e.message,
+                    },
+                    HttpStatus.NOT_FOUND,
+                );
+            }
+        }
     }
 
     update(id: number, updateDoublecheckDto: UpdateDoublecheckDto) {
