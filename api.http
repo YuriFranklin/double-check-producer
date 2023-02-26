@@ -4,12 +4,16 @@ Content-Type: application/json
 
 {
     "structureId": "1234",
+    "queueAt": "08:00:00",
+    "queueNow": true,
+    "name": "Double Check Test",
     "courses": [
         {
-         "name":"Test course",
-         "courseId":"1234"
-         }
-        ]
+            "id": "123",
+            "name":"Test course",
+            "courseId":"1234"
+        }
+    ]
 }
 
 ###

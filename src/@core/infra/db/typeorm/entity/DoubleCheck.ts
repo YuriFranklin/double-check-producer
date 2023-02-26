@@ -23,5 +23,25 @@ export class DoubleCheck {
         eager: true,
         cascade: ['insert', 'recover', 'update', 'soft-remove'],
     })
-    public courses: Course[];
+    public courses?: Course[];
+
+    @Column('time')
+    public queueAt: string;
+
+    @Column('boolean')
+    public queueNow: boolean;
+
+    @Column('varchar', { array: true, nullable: true })
+    public repeatDays?: (
+        | 'monday'
+        | 'tuesday'
+        | 'wednesday'
+        | 'thursday'
+        | 'friday'
+        | 'saturday'
+        | 'sunday'
+    )[];
+
+    @Column('varchar', { array: true, nullable: true })
+    public emailTo?: string[];
 }

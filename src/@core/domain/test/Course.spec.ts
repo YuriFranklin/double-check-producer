@@ -1,9 +1,12 @@
-import { Course, CourseProps } from '../entity/Course';
-import { ErrorProps, Error } from '../entity/Error';
+import { Course, CreateCourseParams } from '../entity/Course';
+import { CreateErrorParams } from '../entity/Error';
+import crypto from 'crypto';
 
 describe('Course Tests', () => {
     it('Should create a new Course', () => {
-        const props: ErrorProps = {
+        const courseId = '123';
+
+        const errorProps: CreateErrorParams = {
             id: '123',
             name: 'TEST_ERROR',
             errorId: '1',
@@ -15,22 +18,32 @@ describe('Course Tests', () => {
             itemId: '_123123_',
         };
 
-        const error = Error.create(props);
+        const id = crypto.randomUUID();
 
-        const courseProps: CourseProps = {
+        const courseProps: CreateCourseParams = {
+            courseId,
+            id,
             name: 'Test Course',
-            id: '123',
-            errors: [error],
+            errors: [{ ...errorProps, courseId }],
         };
 
-        const course = Course.create(courseProps);
+        const course = Course.create(courseProps).toJSON();
 
-        expect(course.toJSON()).toStrictEqual({
+        expect(course).toStrictEqual({
             ...courseProps,
+            id,
+            checked: expect.any(Boolean),
             doubleCheckId: expect.any(String),
             createdAt: expect.any(String),
             editedAt: expect.any(String),
-            errors: courseProps.errors.map((error) => error.toJSON()),
+            errors: expect.any(Array),
         });
+
+        expect(course.errors).toStrictEqual([
+            {
+                ...errorProps,
+                courseId,
+            },
+        ]);
     });
 });

@@ -30,9 +30,16 @@ export class CourseTypeORMMapper {
         return Course.create({
             ...course,
             doubleCheckId: course.doubleCheck?.id,
-            errors: course.errors?.map((err) =>
-                ErrorTypeORMMapper.toDomainEntity(err),
-            ),
+            errors: course.errors?.map((err) => ErrorTypeORMMapper.toJSON(err)),
         });
+    }
+
+    public static toJSON(course: CourseSchema) {
+        return {
+            ...course,
+            errors: course.errors.map((error) =>
+                ErrorTypeORMMapper.toJSON(error),
+            ),
+        };
     }
 }

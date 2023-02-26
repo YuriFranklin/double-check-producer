@@ -57,6 +57,8 @@ describe('DoubleCheck Tests', () => {
             courses: [course],
             checked: false,
             id: '123',
+            queueNow: false,
+            queueAt: '12:00:00',
         };
 
         const doubleCheck = dataSource

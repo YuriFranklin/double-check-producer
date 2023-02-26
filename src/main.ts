@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import 'dotenv/config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -15,6 +16,8 @@ async function bootstrap() {
             },
         },
     }); */
+
+    app.useGlobalPipes(new ValidationPipe());
 
     app.enableCors();
 

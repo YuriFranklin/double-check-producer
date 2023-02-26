@@ -12,11 +12,13 @@
         "baseUrl": "./",
         "incremental": true,
         "skipLibCheck": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "noImplicitAny": false,
-        "strictBindCallApply": false,
+        "strictBindCallApply": true,
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "strict": false
     }
 }

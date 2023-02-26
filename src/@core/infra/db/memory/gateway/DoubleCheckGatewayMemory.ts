@@ -13,7 +13,7 @@ export class DoubleCheckGatewayMemory implements DoubleCheckGatewayInterface {
 
     async update(id: string, doubleCheck: DoubleCheck): Promise<DoubleCheck> {
         const index = this.doubleChecks.findIndex(
-            (dCheck) => dCheck.props.id === id,
+            (dCheck) => dCheck.toJSON().id === id,
         );
         if (!index) throw new Error('Item not founded.');
 
@@ -22,7 +22,7 @@ export class DoubleCheckGatewayMemory implements DoubleCheckGatewayInterface {
 
     async delete(id: string): Promise<void> {
         const index = this.doubleChecks.findIndex(
-            (dCheck) => dCheck.props.id === id,
+            (dCheck) => dCheck.toJSON().id === id,
         );
         if (!index) throw new Error('Item not founded.');
 
@@ -30,9 +30,11 @@ export class DoubleCheckGatewayMemory implements DoubleCheckGatewayInterface {
     }
 
     async find(id: string): Promise<DoubleCheck> {
-        return this.doubleChecks.find(
-            (doubleCheck) => doubleCheck.props.id === id,
+        const founded = this.doubleChecks.find(
+            (doubleCheck) => doubleCheck.toJSON().id === id,
         );
+        if (!founded) throw new Error('Item not founded.');
+        return founded;
     }
 
     async insert(doubleCheck: DoubleCheck): Promise<void> {

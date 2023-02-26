@@ -41,4 +41,8 @@ export class ErrorTypeORMMapper {
             courseId: errorSchema.course?.id,
         });
     }
+
+    public static toJSON(errorSchema: ErrorSchema) {
+        return { ...errorSchema };
+    }
 }

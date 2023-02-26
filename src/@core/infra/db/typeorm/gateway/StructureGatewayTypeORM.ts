@@ -61,11 +61,15 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
         transactionalEntityManager: EntityManager,
     ) {
         await transactionalEntityManager.save(template);
-        await Promise.all(
-            template.children?.map((t) =>
-                this.insertTemplateRecurrence(t, transactionalEntityManager),
-            ),
-        );
+        template.children?.length &&
+            (await Promise.all(
+                template.children?.map((t) =>
+                    this.insertTemplateRecurrence(
+                        t,
+                        transactionalEntityManager,
+                    ),
+                ),
+            ));
     }
 
     async find(structureId: string): Promise<Structure> {

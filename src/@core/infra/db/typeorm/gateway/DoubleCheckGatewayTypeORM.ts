@@ -6,7 +6,6 @@ import {
     FindOptionsWhere,
     ILike,
     LessThanOrEqual,
-    Like,
     MoreThanOrEqual,
     Repository,
 } from 'typeorm';
@@ -27,12 +26,13 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
         const ormEntity = DoubleCheckTypeORMMapper.toOrmEntity(doubleCheck);
         await this.dataSource.manager.transaction(
             async (transactionalEntityManager) => {
-                await Promise.all(
-                    ormEntity.courses.map(
-                        async (course) =>
-                            await transactionalEntityManager.save(course),
-                    ),
-                );
+                ormEntity.courses?.length &&
+                    (await Promise.all(
+                        ormEntity.courses?.map(
+                            async (course) =>
+                                await transactionalEntityManager.save(course),
+                        ),
+                    ));
 
                 await transactionalEntityManager.save(ormEntity);
             },
@@ -49,7 +49,7 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
         const ormEntity = DoubleCheckTypeORMMapper.toOrmEntity(doubleCheck);
 
         const updated = (await (
-            await this.ormRepository.update(findedEntity, ormEntity)
+            await this.ormRepository.update({ id }, ormEntity)
         ).raw) as DoubleCheckSchema;
 
         return DoubleCheckTypeORMMapper.toDomainEntity(updated);

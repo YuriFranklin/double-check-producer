@@ -1,4 +1,18 @@
 import crypto from 'crypto';
+import * as z from 'zod';
+
+export const errorSchema = z.object({
+    id: z.string().optional(),
+    name: z.string(),
+    type: z.enum(['error', 'warning']),
+    severity: z.enum(['high', 'low', 'medium']),
+    courseId: z.string().optional(),
+    itemId: z.string().optional(),
+    itemName: z.string(),
+    itemType: z.string(),
+    errorId: z.string(),
+    message: z.string(),
+});
 
 export type ErrorProps = {
     id?: string;
@@ -13,6 +27,8 @@ export type ErrorProps = {
     message: string;
 };
 
+export type CreateErrorParams = z.input<typeof errorSchema>;
+
 export class Error {
     public props: Required<ErrorProps>;
 
@@ -25,11 +41,14 @@ export class Error {
         };
     }
 
-    public static create(props: ErrorProps): Error {
-        return new Error(props);
+    public static create(props: CreateErrorParams): Error {
+        const validatedProps = errorSchema.parse(props);
+        return new Error(validatedProps);
     }
 
     public toJSON() {
-        return this.props;
+        return {
+            ...this.props,
+        };
     }
 }

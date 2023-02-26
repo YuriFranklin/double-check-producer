@@ -14,7 +14,13 @@ export class StructureGatewayMemory implements StructureGatewayInterface {
     }
 
     async find(id: string): Promise<Structure> {
-        return this.structures.find((structure) => structure.props.id === id);
+        const finded = this.structures.find(
+            (structure) => structure.props.id === id,
+        );
+
+        if (!finded) throw new Error('Item not finded.');
+
+        return finded;
     }
 
     async insert(structure: Structure): Promise<void> {
