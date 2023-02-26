@@ -1,8 +1,8 @@
-import { Template, TemplateProps } from '../entity/Template';
+import { CreateTemplateParams, Template } from '../entity/Template';
 
 describe('Template Tests', () => {
     it('Should create a new template', () => {
-        let templateProps: TemplateProps = {
+        let templateProps: CreateTemplateParams = {
             name: 'TestTemplate',
             description: 'This is a test template',
             disponibility: true,
@@ -14,7 +14,7 @@ describe('Template Tests', () => {
             hasChildren: false,
         };
 
-        let template = new Template(templateProps);
+        let template = Template.create(templateProps);
 
         expect(template.toJSON()).toStrictEqual({
             ...templateProps,
@@ -26,14 +26,15 @@ describe('Template Tests', () => {
             descriptionAlt: expect.any(String),
             beforeId: expect.any(String),
             parentId: expect.any(String),
+            id: expect.any(String),
         });
 
         templateProps = {
             ...templateProps,
-            children: [new Template({ ...templateProps })],
+            children: [templateProps],
         };
 
-        template = new Template({ ...templateProps });
+        template = Template.create({ ...templateProps });
 
         expect(template.toJSON()).toStrictEqual({
             ...templateProps,
@@ -45,6 +46,7 @@ describe('Template Tests', () => {
             beforeId: expect.any(String),
             parentId: expect.any(String),
             children: expect.any(Array),
+            id: expect.any(String),
         });
     });
 });

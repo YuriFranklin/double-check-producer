@@ -1,21 +1,22 @@
-import { Structure, StructureProps } from '../entity/Structure';
-import { Template, TemplateProps } from '../entity/Template';
+import { Structure, CreateStructureParams } from '../entity/Structure';
+import { CreateTemplateParams } from '../entity/Template';
 
 describe('Structure Tests', () => {
     it('Should create a new structure', () => {
-        let structureProps: StructureProps = {
+        let structureProps: CreateStructureParams = {
             name: 'TestStructure',
         };
 
         let structure = Structure.create(structureProps);
 
-        expect(structure.props).toEqual({
+        expect(structure.toJSON()).toMatchObject({
             name: structureProps.name,
             templates: expect.any(Array),
             id: expect.any(String),
+            createdAt: expect.any(String),
         });
 
-        const templateProps: TemplateProps = {
+        const templateProps: CreateTemplateParams = {
             name: 'TestStructure',
             description: 'This is a test template',
             id: '1234',
@@ -28,19 +29,18 @@ describe('Structure Tests', () => {
             hasChildren: false,
         };
 
-        const template = new Template(templateProps);
-
         structureProps = {
             name: 'TestStructure',
-            templates: [template],
+            templates: [templateProps],
         };
 
         structure = Structure.create(structureProps);
 
-        expect(structure.props).toEqual({
+        expect(structure.toJSON()).toMatchObject({
             name: structureProps.name,
-            templates: [template],
+            templates: [templateProps],
             id: expect.any(String),
+            createdAt: expect.any(String),
         });
     });
 });

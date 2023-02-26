@@ -1,31 +1,43 @@
-import { Template } from './Template';
+import { Template, TemplateSchema } from './Template';
 import crypto from 'crypto';
+import * as z from 'zod';
+
+export const StructureSchema = z.object({
+    id: z.string().optional(),
+    name: z.string().min(3),
+    createdAt: z.date().optional(),
+    templates: z
+        .array(TemplateSchema)
+        .optional()
+        .transform((templates) =>
+            templates?.map((template) => Template.create(template)),
+        ),
+});
 
 export type StructureProps = {
     id?: string;
     name: string;
     templates?: Template[];
+    createdAt?: Date;
 };
 
+export type CreateStructureParams = z.input<typeof StructureSchema>;
+
 export class Structure {
-    public props: Required<StructureProps>;
+    private props: Required<StructureProps>;
 
     private constructor(props: StructureProps) {
-        if (!props) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-expect-error
-            this.props = {};
-            return;
-        }
         this.props = {
-            id: props.id || crypto.randomUUID(),
             ...props,
+            id: props.id || crypto.randomUUID(),
             templates: props.templates || [],
+            createdAt: props.createdAt || new Date(),
         };
     }
 
     static create(props: StructureProps) {
-        return new Structure(props);
+        const validatedProps = StructureSchema.parse(props);
+        return new Structure(validatedProps);
     }
 
     toJSON() {
@@ -34,6 +46,7 @@ export class Structure {
             templates: this.props.templates.map((template) =>
                 template.toJSON(),
             ),
+            createdAt: this.props.createdAt.toISOString(),
         };
     }
 }

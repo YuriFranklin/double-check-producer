@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import * as z from 'zod';
 
 export type TemplateProps = {
     id?: string;
@@ -19,10 +20,40 @@ export type TemplateProps = {
     parentId?: string;
 };
 
+export type CreateTemplateParams = Omit<TemplateProps, 'children'> & {
+    children?: CreateTemplateParams[];
+};
+
+export const TemplateSchema = z.object({
+    id: z.string().optional(),
+    name: z.string(),
+    nameAlt: z.string().optional(),
+    description: z.string().optional(),
+    descriptionAlt: z.string().optional(),
+    isOptional: z.boolean(),
+    warnIfNotFound: z.boolean(),
+    beforeId: z.string().optional(),
+    beforeAlt: z.array(z.string()).optional(),
+    xor: z.array(z.string()).optional(),
+    hasNameOfCourseInContent: z.boolean(),
+    disponibility: z.boolean(),
+    type: z.string(),
+    hasChildren: z.boolean(),
+    children: z
+        .array(z.lazy(() => TemplateSchema))
+        .optional()
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        .transform((templates: CreateTemplateParams[]) =>
+            templates?.map((template) => Template.create(template)),
+        ),
+    parentId: z.string().optional(),
+});
+
 export class Template {
     public props: Required<TemplateProps>;
 
-    constructor(props: TemplateProps) {
+    private constructor(props: TemplateProps) {
         this.props = {
             ...props,
             id: props.id || crypto.randomUUID(),
@@ -44,33 +75,19 @@ export class Template {
         return this.props.children;
     }
 
+    static create(props: CreateTemplateParams) {
+        const validatedProps = TemplateSchema.parse(props);
+        return new Template(validatedProps);
+    }
+
     public setChildren(children: Template[]) {
         this.props.children = children;
     }
 
-    toJSON(): TemplateToJSON {
+    toJSON() {
         return {
             ...this.props,
             children: this.props.children.map((child) => child.toJSON()),
         };
     }
 }
-
-export type TemplateToJSON = {
-    id: string;
-    name: string;
-    nameAlt: string;
-    description: string;
-    descriptionAlt: string;
-    isOptional: boolean;
-    warnIfNotFound: boolean;
-    beforeId: string;
-    beforeAlt: string[];
-    xor: string[];
-    hasNameOfCourseInContent: boolean;
-    disponibility: boolean;
-    type: string;
-    hasChildren: boolean;
-    children: TemplateToJSON[];
-    parentId: string;
-};
