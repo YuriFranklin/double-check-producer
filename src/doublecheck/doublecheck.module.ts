@@ -12,6 +12,7 @@ import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleC
 import { ClientsModule, Transport, ClientKafka } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { Template as TemplateSchema } from '../@core/infra/db/typeorm/entity/Template';
+import { DeleteDoubleCheckUseCase } from '../@core/application/usecase/DeleteDoubleCheckUseCase';
 
 @Module({
     imports: [
@@ -53,6 +54,12 @@ import { Template as TemplateSchema } from '../@core/infra/db/typeorm/entity/Tem
             provide: FindAllDoubleCheckUseCase,
             useFactory: (repository: DoubleCheckGatewayInterface) =>
                 new FindAllDoubleCheckUseCase(repository),
+            inject: [DoubleCheckGatewayTypeORM],
+        },
+        {
+            provide: DeleteDoubleCheckUseCase,
+            useFactory: (repository: DoubleCheckGatewayInterface) =>
+                new DeleteDoubleCheckUseCase(repository),
             inject: [DoubleCheckGatewayTypeORM],
         },
         {

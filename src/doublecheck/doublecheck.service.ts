@@ -6,6 +6,7 @@ import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllD
 import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
 import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
 import NotFoundException from '../@core/domain/exceptions/NotFoundException';
+import { DeleteDoubleCheckUseCase } from '../@core/application/usecase/DeleteDoubleCheckUseCase';
 
 @Injectable()
 export class DoublecheckService {
@@ -13,6 +14,7 @@ export class DoublecheckService {
         private createUseCase: CreateDoubleCheckUseCase,
         private findAllUseCase: FindAllDoubleCheckUseCase,
         private findUseCase: FindDoubleCheckUseCase,
+        private deleteUseCase: DeleteDoubleCheckUseCase,
     ) {}
 
     async create(createDoublecheckDto: CreateDoublecheckDto) {
@@ -29,13 +31,9 @@ export class DoublecheckService {
             return founded;
         } catch (e) {
             if (e instanceof NotFoundException) {
-                throw new HttpException(
-                    {
-                        status: HttpStatus.NOT_FOUND,
-                        error: e.message,
-                    },
-                    HttpStatus.NOT_FOUND,
-                );
+                throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+            } else {
+                throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
             }
         }
     }
@@ -44,7 +42,15 @@ export class DoublecheckService {
         return `This action updates a #${id} doublecheck`;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} doublecheck`;
+    async remove(id: string) {
+        try {
+            await this.deleteUseCase.execute(id);
+        } catch (e) {
+            if (e instanceof NotFoundException) {
+                throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+            } else {
+                throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+            }
+        }
     }
 }

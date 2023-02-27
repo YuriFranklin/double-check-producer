@@ -48,7 +48,7 @@ export class DoubleCheckTypeORMMapper {
     ): DoubleCheck {
         const courses =
             doubleCheckSchema.courses?.map((course) =>
-                CourseTypeORMMapper.toJSON(course),
+                CourseTypeORMMapper.toJSON(course, doubleCheckSchema.id),
             ) || [];
 
         return DoubleCheck.create({ ...doubleCheckSchema, courses });

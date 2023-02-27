@@ -57,7 +57,16 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
     }
 
     async delete(id: string): Promise<void> {
-        await this.ormRepository.delete({ id });
+        const ormEntity = await this.ormRepository.findOne({
+            where: { id },
+            relations: ['courses'],
+        });
+
+        if (!ormEntity) {
+            throw new NotFoundException('Item not founded');
+        }
+
+        await this.ormRepository.delete(ormEntity.id);
     }
 
     async findAll({
@@ -225,7 +234,9 @@ export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
             relations: ['courses'],
         });
 
-        if (!ormEntity) throw new NotFoundException('Item not founded');
+        if (!ormEntity) {
+            throw new NotFoundException('Item not founded');
+        }
 
         return DoubleCheckTypeORMMapper.toDomainEntity(ormEntity);
     }

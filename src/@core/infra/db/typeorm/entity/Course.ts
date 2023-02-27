@@ -32,6 +32,7 @@ export class Course {
     @ManyToOne(() => DoubleCheck, (doubleCheck) => doubleCheck.courses, {
         nullable: true,
         cascade: ['insert', 'recover', 'update', 'soft-remove'],
+        onDelete: 'CASCADE',
     })
     @JoinTable()
     public doubleCheck?: DoubleCheck;

@@ -26,17 +26,21 @@ export class CourseTypeORMMapper {
         return courseSchema;
     }
 
-    public static toDomainEntity(course: CourseSchema): Course {
+    public static toDomainEntity(
+        course: CourseSchema,
+        doubleCheckId?: string,
+    ): Course {
         return Course.create({
             ...course,
-            doubleCheckId: course.doubleCheck?.id,
+            doubleCheckId: doubleCheckId || course.doubleCheck?.id,
             errors: course.errors?.map((err) => ErrorTypeORMMapper.toJSON(err)),
         });
     }
 
-    public static toJSON(course: CourseSchema) {
+    public static toJSON(course: CourseSchema, doubleCheckId?: string) {
         return {
             ...course,
+            doubleCheckId: doubleCheckId || course.doubleCheck?.id,
             errors: course.errors.map((error) =>
                 ErrorTypeORMMapper.toJSON(error),
             ),

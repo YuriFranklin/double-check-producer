@@ -9,7 +9,6 @@ Content-Type: application/json
     "name": "Double Check Test",
     "courses": [
         {
-            "id": "123",
             "name":"Test course",
             "courseId":"1234"
         }
@@ -23,7 +22,11 @@ GET http://localhost:4000/doublecheck
 
 ###
 #FIND DOUBLECHECK
-GET http://localhost:4000/doublecheck/49d7b6e4-5bac-4211-9dc6-433dc64c2641
+GET http://localhost:4000/doublecheck/bf0ea4af-6ced-4abe-9bcb-5697e638521d
+
+###
+#DELETE DOUBLECHECK
+DELETE http://localhost:4000/doublecheck/bf0ea4af-6ced-4abe-9bcb-5697e638521d
 
 ###
 #LOGIN

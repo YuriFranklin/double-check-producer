@@ -59,6 +59,6 @@ export class DoublecheckController {
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        return this.doublecheckService.remove(+id);
+        return this.doublecheckService.remove(id);
     }
 }

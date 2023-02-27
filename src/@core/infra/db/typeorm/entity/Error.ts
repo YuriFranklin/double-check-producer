@@ -33,6 +33,7 @@ export class Error {
     @ManyToOne(() => Course, (course) => course.errors, {
         nullable: true,
         cascade: ['insert', 'recover', 'update', 'soft-remove'],
+        onDelete: 'CASCADE',
     })
     @JoinTable()
     public course?: Course;
