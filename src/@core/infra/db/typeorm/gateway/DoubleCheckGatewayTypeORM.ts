@@ -16,7 +16,7 @@ import {
 import { DoubleCheckTypeORMMapper } from '../mapper/DoubleCheckTypeORMMapper';
 import NumericRange from 'src/types/NumericRange';
 import CreateArrayWithLengthX from 'src/types/CreateArrayWithLength';
-import NotFoundException from '../../../../domain/exceptions/NotFoundException';
+import NotFoundException from '../../../../domain/exception/NotFoundException';
 
 export class DoubleCheckGatewayTypeORM implements DoubleCheckGatewayInterface {
     private ormRepository: Repository<DoubleCheckSchema>;

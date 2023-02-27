@@ -5,7 +5,7 @@ import { UpdateDoublecheckDto } from './dto/update-doublecheck.dto';
 import { FindAllDoubleCheckUseCase } from '../@core/application/usecase/FindAllDoubleCheckUseCase';
 import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleCheckUseCase';
 import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
-import NotFoundException from '../@core/domain/exceptions/NotFoundException';
+import NotFoundException from '../@core/domain/exception/NotFoundException';
 import { DeleteDoubleCheckUseCase } from '../@core/application/usecase/DeleteDoubleCheckUseCase';
 
 @Injectable()
