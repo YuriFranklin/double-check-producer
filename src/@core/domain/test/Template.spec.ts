@@ -2,7 +2,7 @@ import { CreateTemplateParams, Template } from '../entity/Template';
 
 describe('Template Tests', () => {
     it('Should create a new template', () => {
-        let templateProps: CreateTemplateParams = {
+        const templateProps: CreateTemplateParams = {
             name: 'TestTemplate',
             description: 'This is a test template',
             disponibility: true,
@@ -14,9 +14,9 @@ describe('Template Tests', () => {
             hasChildren: false,
         };
 
-        let template = Template.create(templateProps);
+        const template1 = Template.create(templateProps);
 
-        expect(template.toJSON()).toStrictEqual({
+        expect(template1.toJSON()).toStrictEqual({
             ...templateProps,
             beforeAlt: [],
             xor: [],
@@ -29,15 +29,37 @@ describe('Template Tests', () => {
             id: expect.any(String),
         });
 
-        templateProps = {
+        const templateWithChildrenProps: CreateTemplateParams = {
             ...templateProps,
-            children: [templateProps],
+            children: [
+                {
+                    name: 'TestTemplate 2',
+                    isOptional: false,
+                    warnIfNotFound: true,
+                    hasNameOfCourseInContent: false,
+                    disponibility: true,
+                    type: 'test',
+                    hasChildren: true,
+                    children: [
+                        {
+                            name: 'TestTemplate 3',
+                            isOptional: false,
+                            warnIfNotFound: true,
+                            hasNameOfCourseInContent: false,
+                            disponibility: true,
+                            type: 'test',
+                            hasChildren: false,
+                            children: [],
+                        },
+                    ],
+                },
+            ],
         };
 
-        template = Template.create({ ...templateProps });
+        const template2 = Template.create(templateWithChildrenProps);
 
-        expect(template.toJSON()).toStrictEqual({
-            ...templateProps,
+        expect(template2.toJSON()).toStrictEqual({
+            ...templateWithChildrenProps,
             beforeAlt: [],
             xor: [],
             nameAlt: expect.any(String),

@@ -35,7 +35,7 @@ export class Structure {
         };
     }
 
-    static create(props: StructureProps) {
+    static create(props: CreateStructureParams) {
         const validatedProps = StructureSchema.parse(props);
         return new Structure(validatedProps);
     }

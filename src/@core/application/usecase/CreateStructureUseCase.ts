@@ -1,5 +1,4 @@
 import { Structure } from '../../domain/entity/Structure';
-import { Template } from '../../domain/entity/Template';
 import { StructureGatewayInterface } from '../../domain/gateway/StructureGatewayInterface';
 
 export class CreateStructureUseCase {
@@ -8,30 +7,9 @@ export class CreateStructureUseCase {
     async execute(
         input: CreateStructureUseCaseInput,
     ): Promise<CreateStructureUseCaseOutput> {
-        const templates = input.templates?.length
-            ? input.templates.map((template) =>
-                  this.createTemplateRecurrence(template),
-              )
-            : [];
-        const structure = Structure.create({ ...input, templates });
+        const structure = Structure.create(input);
         await this.repository.insert(structure);
         return structure.toJSON();
-    }
-
-    private createTemplateRecurrence(
-        input: TemplateDTO,
-        parentId?: string,
-    ): Template {
-        const { children, ...rest } = input;
-        const template = Template.create({ ...rest, parentId });
-
-        children &&
-            template.setChildren(
-                children.map((child) =>
-                    this.createTemplateRecurrence(child, template.toJSON().id),
-                ),
-            );
-        return template;
     }
 }
 

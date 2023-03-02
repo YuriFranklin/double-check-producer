@@ -27,10 +27,6 @@ export class CreateDoublecheckDto {
     @IsOptional()
     checked?: boolean;
 
-    @IsDateString()
-    @IsOptional()
-    createdAt?: Date;
-
     @IsNotEmpty()
     structureId: string;
 

@@ -45,17 +45,17 @@ Content-Type: application/json
 
 {
    "name":"Test structure",
-   "templates":[
+   "templates": [
       {
-         "name":"Template Test",
-         "description":"This is a template test",
-         "isOptional":false,
-         "warnIfNotFound":true,
-         "hasNameOfCourseInContent":false,
-         "disponibility":true,
-         "type":"document",
-         "hasChildren":true,
-         "children":[
+         "name": "Template Test",
+         "description": "This is a template test",
+         "isOptional": false,
+         "warnIfNotFound": true,
+         "hasNameOfCourseInContent": false,
+         "disponibility": true,
+         "type": "document",
+         "hasChildren": true,
+         "children": [
             {
                "name":"Template Test",
                "description":"This is a template test",

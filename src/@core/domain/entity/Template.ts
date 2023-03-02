@@ -24,31 +24,26 @@ export type CreateTemplateParams = Omit<TemplateProps, 'children'> & {
     children?: CreateTemplateParams[];
 };
 
-export const TemplateSchema = z.object({
-    id: z.string().optional(),
-    name: z.string(),
-    nameAlt: z.string().optional(),
-    description: z.string().optional(),
-    descriptionAlt: z.string().optional(),
-    isOptional: z.boolean(),
-    warnIfNotFound: z.boolean(),
-    beforeId: z.string().optional(),
-    beforeAlt: z.array(z.string()).optional(),
-    xor: z.array(z.string()).optional(),
-    hasNameOfCourseInContent: z.boolean(),
-    disponibility: z.boolean(),
-    type: z.string(),
-    hasChildren: z.boolean(),
-    children: z
-        .array(z.lazy(() => TemplateSchema))
-        .optional()
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        .transform((templates: CreateTemplateParams[]) =>
-            templates?.map((template) => Template.create(template)),
-        ),
-    parentId: z.string().optional(),
-});
+export const TemplateSchema = z.lazy(() =>
+    z.object({
+        id: z.string().optional(),
+        name: z.string(),
+        nameAlt: z.string().optional(),
+        description: z.string().optional(),
+        descriptionAlt: z.string().optional(),
+        isOptional: z.boolean(),
+        warnIfNotFound: z.boolean(),
+        beforeId: z.string().optional(),
+        beforeAlt: z.array(z.string()).optional(),
+        xor: z.array(z.string()).optional(),
+        hasNameOfCourseInContent: z.boolean(),
+        disponibility: z.boolean(),
+        type: z.string(),
+        hasChildren: z.boolean(),
+        children: z.array(z.lazy(() => TemplateSchema)).optional(),
+        parentId: z.string().optional(),
+    }),
+);
 
 export class Template {
     public props: Required<TemplateProps>;
@@ -75,9 +70,14 @@ export class Template {
         return this.props.children;
     }
 
-    static create(props: CreateTemplateParams) {
+    static create(props: CreateTemplateParams): Template {
         const validatedProps = TemplateSchema.parse(props);
-        return new Template(validatedProps);
+        return new Template({
+            ...validatedProps,
+            children: props.children
+                ? props.children.map((child) => Template.create(child))
+                : [],
+        });
     }
 
     public setChildren(children: Template[]) {
