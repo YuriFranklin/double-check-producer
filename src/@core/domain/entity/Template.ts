@@ -46,7 +46,7 @@ export const TemplateSchema = z.lazy(() =>
 );
 
 export class Template {
-    public props: Required<TemplateProps>;
+    private props: Required<TemplateProps>;
 
     private constructor(props: TemplateProps) {
         this.props = {
@@ -66,10 +66,6 @@ export class Template {
         };
     }
 
-    public get children() {
-        return this.props.children;
-    }
-
     static create(props: CreateTemplateParams): Template {
         const validatedProps = TemplateSchema.parse(props);
         return new Template({
@@ -84,10 +80,14 @@ export class Template {
         this.props.children = children;
     }
 
-    toJSON() {
+    public get children() {
+        return this.props.children;
+    }
+
+    public toJSON() {
         return {
             ...this.props,
-            children: this.props.children.map((child) => child.toJSON()),
+            children: this.props.children.map((child) => child.toJSON()) || [],
         };
     }
 }

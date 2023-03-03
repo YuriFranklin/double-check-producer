@@ -3,18 +3,18 @@ import { StructureController } from './structure.controller';
 import { StructureService } from './structure.service';
 
 describe('StructureController', () => {
-  let controller: StructureController;
+    let controller: StructureController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [StructureController],
-      providers: [StructureService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            controllers: [StructureController],
+            providers: [StructureService],
+        }).compile();
 
-    controller = module.get<StructureController>(StructureController);
-  });
+        controller = module.get<StructureController>(StructureController);
+    });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
 });

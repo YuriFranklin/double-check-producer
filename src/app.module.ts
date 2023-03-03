@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { StructureModule } from './structure/structure.module';
 import { Structure as StructureSchema } from './@core/infra/db/typeorm/entity/Structure';
 import { Template as TemplateSchema } from './@core/infra/db/typeorm/entity/Template';
+import { TemplateModule } from './template/template.module';
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { Template as TemplateSchema } from './@core/infra/db/typeorm/entity/Temp
         AuthModule,
         DoublecheckModule,
         StructureModule,
+        TemplateModule,
     ],
 })
 export class AppModule {}

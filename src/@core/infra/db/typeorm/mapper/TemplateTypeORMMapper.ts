@@ -9,7 +9,6 @@ export class TemplateTypeORMMapper {
         const {
             beforeAlt,
             beforeId,
-            children,
             description,
             descriptionAlt,
             disponibility,
@@ -19,11 +18,12 @@ export class TemplateTypeORMMapper {
             isOptional,
             name,
             nameAlt,
-            parentId,
             type,
             warnIfNotFound,
             xor,
-        } = template.props;
+            children,
+        } = template.toJSON();
+
         const ormSchema = new TemplateSchema();
 
         ormSchema.id = id;
@@ -43,7 +43,7 @@ export class TemplateTypeORMMapper {
         parent && (ormSchema.parent = parent);
         children &&
             (ormSchema.children = children.map((child) =>
-                this.toOrmEntity(child, ormSchema),
+                this.toOrmEntity(Template.create(child), ormSchema),
             ));
 
         return ormSchema;

@@ -4,6 +4,7 @@ import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Structure as StructureSchema } from '../entity/Structure';
 import { StructureTypeORMMapper } from '../mapper/StructureTypeORMMapper';
 import { Template as TemplateSchema } from '../entity/Template';
+import NotFoundException from '../../../../domain/exception/NotFoundException';
 
 export class StructureGatewayTypeORM implements StructureGatewayInterface {
     private ormRepository: Repository<StructureSchema>;
@@ -78,7 +79,8 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
             relations: ['templates'],
         });
 
-        if (!ormStructure) throw new Error('Structure has not founded');
+        if (!ormStructure)
+            throw new NotFoundException('Structure has not founded');
 
         return StructureTypeORMMapper.toDomainEntity(ormStructure);
     }
