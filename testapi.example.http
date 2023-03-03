@@ -89,25 +89,18 @@ GET http://localhost:4000/structure/
 
 ###
 #DELETE STRUCTURE
-DELETE http://localhost:3000/structure/5e1f3af0-4d36-4bb9-92fa-cd39ef1ebaeb
+DELETE http://localhost:4000/structure/733c4064-745b-4a41-a80f-40429d764031
 
 ###
 #UPDATE STRUCTURE
-PATCH  http://localhost:3000/structure/49d7b6e4-5bac-4211-9dc6-433dc64c2641
+PATCH  http://localhost:4000/structure/423739e6-7fef-4af0-a9ab-b253feed28fb
 Content-Type: application/json
 
 {
    "name":"Test struct12313ure",
-   "templates":[
-      {
-         "name":"Template Test",
-         "description":"This is a template test",
-         "isOptional":false,
-         "warnIfNotFound":true,
-         "hasNameOfCourseInContent":false,
-         "disponibility":true,
-         "type":"document",
-         "hasChildren":true
-      }
-   ]
 }
+
+
+###
+#CREATE TEMPLATE
+POST http://localhost:4000/structure
