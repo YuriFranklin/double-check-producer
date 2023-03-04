@@ -35,7 +35,7 @@ export class StructureGatewayTypeORM implements StructureGatewayInterface {
     ): Promise<TemplateSchema> {
         return this.dataSource.manager
             .getTreeRepository(TemplateSchema)
-            .findDescendantsTree(template, { depth: 10 }); // TODO: FIND EFFICIENT TO DO IT
+            .findDescendantsTree(template, { depth: 10 }); // TODO: FIND EFFICIENT METHOD TO DO IT
     }
 
     async insert(structure: Structure): Promise<void> {

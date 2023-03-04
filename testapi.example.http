@@ -100,7 +100,46 @@ Content-Type: application/json
    "name":"Test struct12313ure",
 }
 
+###
+#FIND TEMPLATE
+GET http://localhost:4000/template/e0b474f7-8690-4987-8f0b-111a9f73a6c1
 
 ###
 #CREATE TEMPLATE
-POST http://localhost:4000/structure
+POST http://localhost:4000/template/
+Content-Type: application/json
+
+{
+         "name": "Template Test",
+         "description": "This is a template test",
+         "isOptional": false,
+         "warnIfNotFound": true,
+         "hasNameOfCourseInContent": false,
+         "disponibility": true,
+         "type": "document",
+         "hasChildren": true,
+         "children": [
+            {
+               "name":"Template Test",
+               "description":"This is a template test",
+               "isOptional":false,
+               "warnIfNotFound":true,
+               "hasNameOfCourseInContent":false,
+               "disponibility":true,
+               "type":"document",
+               "hasChildren":true,
+               "children":[
+                  {
+                     "name":"Template Test",
+                     "description":"This is a template test",
+                     "isOptional":false,
+                     "warnIfNotFound":true,
+                     "hasNameOfCourseInContent":false,
+                     "disponibility":true,
+                     "type":"document",
+                     "hasChildren":false
+                  }
+               ]
+            }
+         ]
+}

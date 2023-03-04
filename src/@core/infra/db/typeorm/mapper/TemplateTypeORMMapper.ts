@@ -49,15 +49,23 @@ export class TemplateTypeORMMapper {
         return ormSchema;
     }
 
-    public static toDomainEntity(
-        templateSchema: TemplateSchema,
-        parent?: TemplateSchema,
-    ): Template {
-        const parentId = parent?.id;
-        const template = Template.create({
-            ...templateSchema,
-            parentId,
-        });
+    public static toDomainEntity(templateSchema: TemplateSchema): Template {
+        const test = this.putParentIdRecurrence(templateSchema);
+        const template = Template.create(test);
+
         return template;
+    }
+
+    private static putParentIdRecurrence(
+        templateSchema: TemplateSchema,
+        templateParent?: TemplateSchema,
+    ) {
+        return {
+            ...templateSchema,
+            parentId: templateSchema.parent?.id || templateParent?.id,
+            children: templateSchema.children?.map((child) =>
+                this.putParentIdRecurrence(child, templateSchema),
+            ),
+        };
     }
 }

@@ -25,12 +25,32 @@ export class TemplateGatewayTypeORM implements TemplateGatewayInterface {
     async find(id: string): Promise<Template> {
         const template = await this.ormRepository.findOne({
             where: { id },
-            relations: ['templates'],
+            relations: ['children', 'parent'],
         });
 
         if (!template) throw new NotFoundException('Template has not founded.');
 
-        return TemplateTypeORMMapper.toDomainEntity(template);
+        const templateWithChildren = {
+            ...template,
+            children: template.children?.length
+                ? await Promise.all(
+                      template.children.map((template) =>
+                          this.findTemplateRecurrence(template),
+                      ),
+                  )
+                : [],
+        };
+        return TemplateTypeORMMapper.toDomainEntity(templateWithChildren);
+    }
+
+    async findTemplateRecurrence(
+        template: TemplateSchema,
+    ): Promise<TemplateSchema> {
+        return this.dataSource.manager
+            .getTreeRepository(TemplateSchema)
+            .findDescendantsTree(template, {
+                depth: 10,
+            }); // TODO: FIND EFFICIENT METHOD TO DO IT
     }
 
     async delete(id: string): Promise<void> {
