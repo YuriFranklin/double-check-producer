@@ -7,6 +7,7 @@ import { getDataSourceToken, TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { FindTemplateUseCase } from '../@core/application/usecase/FindTemplateUseCase';
 import { TemplateGatewayInterface } from '../@core/domain/gateway/TemplateGatewayInterface';
+import { DeleteTemplateUseCase } from '../@core/application/usecase/DeleteTemplateUseCase';
 
 @Module({
     imports: [TypeOrmModule.forFeature([TemplateSchema])],
@@ -14,16 +15,22 @@ import { TemplateGatewayInterface } from '../@core/domain/gateway/TemplateGatewa
     providers: [
         TemplateService,
         {
+            provide: TemplateGatewayTypeORM,
+            useFactory: (dataSource: DataSource) =>
+                new TemplateGatewayTypeORM(dataSource),
+            inject: [getDataSourceToken()],
+        },
+        {
             provide: FindTemplateUseCase,
             useFactory: (repository: TemplateGatewayInterface) =>
                 new FindTemplateUseCase(repository),
             inject: [TemplateGatewayTypeORM],
         },
         {
-            provide: TemplateGatewayTypeORM,
-            useFactory: (dataSource: DataSource) =>
-                new TemplateGatewayTypeORM(dataSource),
-            inject: [getDataSourceToken()],
+            provide: DeleteTemplateUseCase,
+            useFactory: (repository: TemplateGatewayInterface) =>
+                new DeleteTemplateUseCase(repository),
+            inject: [TemplateGatewayTypeORM],
         },
     ],
 })

@@ -20,10 +20,10 @@ export class TemplateController {
         return this.templateService.create(createTemplateDto);
     }
 
-    @Get()
+    /* @Get()
     findAll() {
         return this.templateService.findAll();
-    }
+    } */
 
     @Get(':id')
     findOne(@Param('id') id: string) {
@@ -40,6 +40,6 @@ export class TemplateController {
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        return this.templateService.remove(+id);
+        return this.templateService.remove(id);
     }
 }
