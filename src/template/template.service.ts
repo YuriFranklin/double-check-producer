@@ -4,16 +4,20 @@ import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
 import NotFoundException from '../@core/domain/exception/NotFoundException';
 import { DeleteTemplateUseCase } from '../@core/application/usecase/DeleteTemplateUseCase';
+import { CreateTemplateUseCase } from '../@core/application/usecase/CreateTemplateUseCase';
+import { UpdateTemplateUseCase } from '../@core/application/usecase/UpdateTemplateUseCase';
 
 @Injectable()
 export class TemplateService {
     constructor(
         private findTemplateUseCase: FindTemplateUseCase,
         private deleteTemplateUseCase: DeleteTemplateUseCase,
+        private createTemplateUseCase: CreateTemplateUseCase,
+        private updateTemplateUseCase: UpdateTemplateUseCase,
     ) {}
 
     create(createTemplateDto: CreateTemplateDto) {
-        return 'This action adds a new template';
+        return this.createTemplateUseCase.execute(createTemplateDto);
     }
 
     findAll() {
@@ -33,8 +37,20 @@ export class TemplateService {
         }
     }
 
-    async update(id: number, updateTemplateDto: UpdateTemplateDto) {
-        return `This action updates a #${id} template`;
+    async update(id: string, updateTemplateDto: UpdateTemplateDto) {
+        try {
+            const updated = await this.updateTemplateUseCase.execute(
+                id,
+                updateTemplateDto,
+            );
+            return updated;
+        } catch (e) {
+            if (e instanceof NotFoundException) {
+                throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+            } else {
+                throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+            }
+        }
     }
 
     async remove(id: string) {

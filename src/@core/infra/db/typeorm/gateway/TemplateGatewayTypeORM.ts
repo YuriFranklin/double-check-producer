@@ -59,6 +59,10 @@ export class TemplateGatewayTypeORM implements TemplateGatewayInterface {
 
     async update(id: string, template: Template): Promise<void> {
         const ormTemplate = TemplateTypeORMMapper.toOrmEntity(template);
-        await this.ormRepository.update(id, ormTemplate);
+
+        await this.ormRepository.save(ormTemplate);
     }
 }
+/*
+where: { id },
+relations: ['children', 'parent'], */

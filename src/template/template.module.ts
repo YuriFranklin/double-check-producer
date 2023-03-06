@@ -8,6 +8,8 @@ import { DataSource } from 'typeorm';
 import { FindTemplateUseCase } from '../@core/application/usecase/FindTemplateUseCase';
 import { TemplateGatewayInterface } from '../@core/domain/gateway/TemplateGatewayInterface';
 import { DeleteTemplateUseCase } from '../@core/application/usecase/DeleteTemplateUseCase';
+import { CreateTemplateUseCase } from '../@core/application/usecase/CreateTemplateUseCase';
+import { UpdateTemplateUseCase } from '../@core/application/usecase/UpdateTemplateUseCase';
 
 @Module({
     imports: [TypeOrmModule.forFeature([TemplateSchema])],
@@ -30,6 +32,18 @@ import { DeleteTemplateUseCase } from '../@core/application/usecase/DeleteTempla
             provide: DeleteTemplateUseCase,
             useFactory: (repository: TemplateGatewayInterface) =>
                 new DeleteTemplateUseCase(repository),
+            inject: [TemplateGatewayTypeORM],
+        },
+        {
+            provide: CreateTemplateUseCase,
+            useFactory: (repository: TemplateGatewayInterface) =>
+                new CreateTemplateUseCase(repository),
+            inject: [TemplateGatewayTypeORM],
+        },
+        {
+            provide: UpdateTemplateUseCase,
+            useFactory: (repository: TemplateGatewayInterface) =>
+                new UpdateTemplateUseCase(repository),
             inject: [TemplateGatewayTypeORM],
         },
     ],

@@ -38,6 +38,7 @@ client_id=double-check
 &grant_type=password
 &username=teste
 &password=test
+
 ###
 #CREATE NEW STRUCTURE
 POST http://localhost:4000/structure
@@ -97,12 +98,12 @@ PATCH  http://localhost:4000/structure/423739e6-7fef-4af0-a9ab-b253feed28fb
 Content-Type: application/json
 
 {
-   "name":"Test struct12313ure",
+   "name": "Test struct12313ure"
 }
 
 ###
 #FIND TEMPLATE
-GET http://localhost:4000/template/e0b474f7-8690-4987-8f0b-111a9f73a6c1
+GET http://localhost:4000/template/7e49888b-b13d-4dd5-93c6-9b6a8e682c1e
 
 ###
 #CREATE TEMPLATE
@@ -146,4 +147,14 @@ Content-Type: application/json
 
 ###
 #DELETE TEMPLATE
-DELETE http://localhost:4000/template/e0b474f7-8690-4987-8f0b-111a9f73a6c1
+DELETE http://localhost:4000/template/8498fa46-8d20-44ef-b434-cf3481aadc01
+
+###
+#UPDATE TEMPLATE
+PATCH http://localhost:4000/template/9a2b8c89-fc44-4078-bce7-969119d4141b
+Content-Type: application/json
+
+{
+  "name": "Template Test UPDATED 2",
+  "description": "This is a template test"
+}

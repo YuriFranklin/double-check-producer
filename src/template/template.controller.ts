@@ -35,7 +35,7 @@ export class TemplateController {
         @Param('id') id: string,
         @Body() updateTemplateDto: UpdateTemplateDto,
     ) {
-        return this.templateService.update(+id, updateTemplateDto);
+        return this.templateService.update(id, updateTemplateDto);
     }
 
     @Delete(':id')

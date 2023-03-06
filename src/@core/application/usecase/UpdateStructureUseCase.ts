@@ -4,7 +4,7 @@ import { StructureGatewayInterface } from '../../domain/gateway/StructureGateway
 export class UpdateStructureUseCase {
     constructor(private repository: StructureGatewayInterface) {}
 
-    async execute(id: string, input: Partial<Input>): Promise<Output> {
+    async execute(id: string, input: Input): Promise<Output> {
         const founded = await (await this.repository.find(id)).toJSON();
 
         if (!founded) throw 'Structure not founded';
@@ -27,17 +27,17 @@ export class UpdateStructureUseCase {
     }
 }
 
-export type Input = {
+export type Input = Omit<Partial<StructureDTO>, 'id' | 'templates'>;
+
+export type Output = Required<StructureDTO>;
+
+type StructureDTO = {
+    id?: string;
     name: string;
+    templates?: TemplateDTO[];
 };
 
-export type Output = {
-    id: string;
-    name: string;
-    templates: TemplateDTO[];
-};
-
-type TemplateDTO = {
+export type TemplateDTO = {
     id?: string;
     name: string;
     nameAlt?: string;
