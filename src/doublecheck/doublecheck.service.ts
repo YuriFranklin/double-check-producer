@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { CreateDoubleCheckUseCase } from '../@core/application/usecase/CreateDoubleCheckUseCase';
 import { CreateDoublecheckDto } from './dto/create-doublecheck.dto';
 import { UpdateDoublecheckDto } from './dto/update-doublecheck.dto';
@@ -7,10 +7,12 @@ import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleC
 import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
 import NotFoundException from '../@core/domain/exception/NotFoundException';
 import { DeleteDoubleCheckUseCase } from '../@core/application/usecase/DeleteDoubleCheckUseCase';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class DoublecheckService {
     constructor(
+        @Inject('KAFKA_SERVICE') private kafkaService: ClientKafka,
         private createUseCase: CreateDoubleCheckUseCase,
         private findAllUseCase: FindAllDoubleCheckUseCase,
         private findUseCase: FindDoubleCheckUseCase,
@@ -18,7 +20,18 @@ export class DoublecheckService {
     ) {}
 
     async create(createDoublecheckDto: CreateDoublecheckDto) {
-        return this.createUseCase.execute(createDoublecheckDto);
+        try {
+            const doubleCheck = await this.createUseCase.execute(
+                createDoublecheckDto,
+            );
+
+            doubleCheck.courses?.forEach((course) =>
+                this.kafkaService.emit('double-check', JSON.stringify(course)),
+            );
+            return doubleCheck;
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        }
     }
 
     async findAll(findAllDoubleCheckDto: FindAllDoubleCheckDto) {

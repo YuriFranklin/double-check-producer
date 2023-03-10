@@ -103,7 +103,7 @@ Content-Type: application/json
 
 ###
 #FIND TEMPLATE
-GET http://localhost:4000/template/7e49888b-b13d-4dd5-93c6-9b6a8e682c1e
+GET http://localhost:4000/template/9a2b8c89-fc44-4078-bce7-969119d4141b
 
 ###
 #CREATE TEMPLATE
@@ -156,5 +156,18 @@ Content-Type: application/json
 
 {
   "name": "Template Test UPDATED 2",
-  "description": "This is a template test"
+  "description": "This is a template test",
+  "id": "6a8b530b-626d-446e-be2b-1ca37a5d366a",
+  "children": [
+            {
+               "name":"Template Test",
+               "description":"This is a template test",
+               "isOptional":false,
+               "warnIfNotFound":true,
+               "hasNameOfCourseInContent":false,
+               "disponibility":true,
+               "type":"document",
+               "hasChildren":false
+            }
+         ]
 }

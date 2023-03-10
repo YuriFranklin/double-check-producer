@@ -5,15 +5,21 @@ import { TemplateGatewayInterface } from '../../domain/gateway/TemplateGatewayIn
 export class UpdateTemplateUseCase {
     constructor(private repository: TemplateGatewayInterface) {}
 
-    public async execute(id: string, input: Input): Promise<Output> {
-        const founded = await this.repository.find(id);
+    public async execute(templateId: string, input: Input): Promise<Output> {
+        const founded = await this.repository.find(templateId);
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore // This forces omit ID param
+        const { id, ...values } = input;
 
         if (!founded) throw new NotFoundException('Template has not founded');
 
         const template = Template.create({
             ...founded.toJSON(),
-            ...input,
+            ...values,
         });
+
+        console.log(template);
 
         await this.repository.update(id, template);
 

@@ -25,6 +25,10 @@ export class DoubleCheckTypeORMMapper {
         ormDoubleCheckSchema.createdAt = new Date(createdAt);
         ormDoubleCheckSchema.structureId = structureId;
         ormDoubleCheckSchema.name = name;
+        ormDoubleCheckSchema.emailTo = emailTo;
+        ormDoubleCheckSchema.queueAt = queueAt;
+        ormDoubleCheckSchema.queueNow = queueNow;
+        ormDoubleCheckSchema.repeatDays = repeatDays;
         ormDoubleCheckSchema.courses = courses.map((c) =>
             CourseTypeORMMapper.toORMEntity(
                 Course.create({
@@ -35,11 +39,6 @@ export class DoubleCheckTypeORMMapper {
                 ormDoubleCheckSchema,
             ),
         );
-        ormDoubleCheckSchema.emailTo = emailTo;
-        ormDoubleCheckSchema.queueAt = queueAt;
-        ormDoubleCheckSchema.queueNow = queueNow;
-        ormDoubleCheckSchema.repeatDays = repeatDays;
-
         return ormDoubleCheckSchema;
     }
 

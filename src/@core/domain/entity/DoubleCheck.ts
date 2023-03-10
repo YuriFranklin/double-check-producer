@@ -81,7 +81,9 @@ export class DoubleCheck {
         return {
             ...this.props,
             createdAt: this.props.createdAt.toISOString(),
-            courses: this.props.courses.map((course) => course.toJSON()),
+            courses: this.props.courses.map((course) => {
+                return { ...course.toJSON(), doubleCheckId: this.props.id };
+            }),
         };
     }
 }
