@@ -35,7 +35,6 @@ export class StructureController {
         @Param('id') id: string,
         @Body() updateStructureDto: UpdateStructureDto,
     ) {
-        console.log(updateStructureDto);
         return this.structureService.update(id, updateStructureDto);
     }
 

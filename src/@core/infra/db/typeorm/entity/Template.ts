@@ -11,7 +11,7 @@ import {
 import { Structure } from './Structure';
 
 @Entity('template')
-@Tree('nested-set')
+@Tree('closure-table')
 export class Template {
     @PrimaryColumn('uuid')
     public id: string;

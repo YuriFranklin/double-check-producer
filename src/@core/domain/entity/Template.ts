@@ -61,19 +61,25 @@ export class Template {
             beforeId: props.beforeId || '',
             parentId: props.parentId || '',
             hasNameOfCourseInContent: props.hasNameOfCourseInContent || false,
-            hasChildren: props.hasChildren || false,
+            hasChildren: !!props.children?.length || false,
             isOptional: props.isOptional || false,
         };
     }
 
     static create(props: CreateTemplateParams): Template {
         const validatedProps = TemplateSchema.parse(props);
-        return new Template({
+        const tmplt = new Template({
             ...validatedProps,
-            children: props.children
-                ? props.children.map((child) => Template.create(child))
-                : [],
         });
+
+        if (props.children?.length)
+            tmplt.setChildren(
+                props.children.map((child) =>
+                    Template.create({ ...child, parentId: tmplt.props.id }),
+                ),
+            );
+
+        return tmplt;
     }
 
     public setChildren(children: Template[]) {

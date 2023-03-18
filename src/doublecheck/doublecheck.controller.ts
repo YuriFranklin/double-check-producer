@@ -19,8 +19,7 @@ import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
 export class DoublecheckController {
     constructor(
         private readonly doublecheckService: DoublecheckService,
-        @Inject('KAFKA_PRODUCER')
-        private kafkaProducer: Producer,
+        @Inject('KAFKA_PRODUCER') private kafkaProducer: Producer,
     ) {}
 
     @Post()
@@ -29,19 +28,20 @@ export class DoublecheckController {
             createDoublecheckDto,
         );
 
-        doubleCheck.courses?.length &&
-            this.kafkaProducer.send({
+        await doubleCheck.courses?.forEach(async (course) => {
+            await this.kafkaProducer.send({
                 topic: 'double-check',
-                messages: doubleCheck.courses?.map((course) => {
-                    return {
+                messages: [
+                    {
                         key: 'double-check',
                         value: JSON.stringify({
+                            ...course,
                             structureId: doubleCheck.structureId,
-                            course,
                         }),
-                    };
-                }),
+                    },
+                ],
             });
+        });
 
         return doubleCheck;
     }

@@ -3,14 +3,14 @@ POST http://localhost:4000/doublecheck
 Content-Type: application/json
 
 {
-    "structureId": "1234",
+    "structureId": "86d3780f-8ba6-4864-950a-73a841b418b1",
     "queueAt": "08:00:00",
     "queueNow": true,
     "name": "Double Check Test",
     "courses": [
         {
-            "name":"Test course",
-            "courseId":"1234"
+            "name":"Test course 5",
+            "courseId":"TESTE_YURI"
         }
     ]
 }
@@ -66,7 +66,7 @@ Content-Type: application/json
                "disponibility":true,
                "type":"document",
                "hasChildren":true,
-               "children":[
+               "children": [
                   {
                      "name":"Template Test",
                      "description":"This is a template test",

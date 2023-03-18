@@ -63,6 +63,3 @@ export class TemplateGatewayTypeORM implements TemplateGatewayInterface {
         await this.ormRepository.save(ormTemplate);
     }
 }
-/*
-where: { id },
-relations: ['children', 'parent'], */

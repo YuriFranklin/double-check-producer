@@ -12,7 +12,6 @@ import { ClientKafka } from '@nestjs/microservices';
 @Injectable()
 export class DoublecheckService {
     constructor(
-        @Inject('KAFKA_SERVICE') private kafkaService: ClientKafka,
         private createUseCase: CreateDoubleCheckUseCase,
         private findAllUseCase: FindAllDoubleCheckUseCase,
         private findUseCase: FindDoubleCheckUseCase,
@@ -23,10 +22,6 @@ export class DoublecheckService {
         try {
             const doubleCheck = await this.createUseCase.execute(
                 createDoublecheckDto,
-            );
-
-            doubleCheck.courses?.forEach((course) =>
-                this.kafkaService.emit('double-check', JSON.stringify(course)),
             );
             return doubleCheck;
         } catch (e) {
