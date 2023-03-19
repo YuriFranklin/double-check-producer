@@ -7,7 +7,6 @@ import { FindDoubleCheckUseCase } from '../@core/application/usecase/FindDoubleC
 import { FindAllDoubleCheckDto } from './dto/find-all-doublecheck.dto';
 import NotFoundException from '../@core/domain/exception/NotFoundException';
 import { DeleteDoubleCheckUseCase } from '../@core/application/usecase/DeleteDoubleCheckUseCase';
-import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class DoublecheckService {

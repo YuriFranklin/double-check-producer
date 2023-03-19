@@ -30,13 +30,13 @@ export class DoublecheckController {
 
         await doubleCheck.courses?.forEach(async (course) => {
             await this.kafkaProducer.send({
-                topic: 'double-check',
+                topic: 'double-check-course',
                 messages: [
                     {
-                        key: 'double-check',
                         value: JSON.stringify({
                             ...course,
                             structureId: doubleCheck.structureId,
+                            doubleCheckId: doubleCheck.id,
                         }),
                     },
                 ],
